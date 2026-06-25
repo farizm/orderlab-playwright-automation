@@ -7,17 +7,15 @@ professional SDET framework.
 
 ## Active task
 
-Create full beginner-friendly project documentation and remove job-search
-wording from public-facing documentation.
+Rewrite README positioning around business value and release-risk reduction.
 
 ## Acceptance criteria
 
-- Add a full documentation file that explains the project history, structure,
-  technologies, techniques, methods, and reasoning in beginner-friendly language.
-- Cover every git history item in chronological order.
-- Rename the main README title to “OrderLab Playwright Automation Framework”.
-- Remove job-search wording from README and main documentation.
-- Link the new full documentation from README.
+- README explains what release risks the framework reduces.
+- README describes the suite as a practical QA automation deliverable for
+  customer ordering, admin, API, accessibility, and CI checks.
+- README avoids wording that sounds like a learning-only project.
+- Engineering decisions remain technically accurate and concise.
 - Run a small verification command.
 
 ## Latest evidence
@@ -134,6 +132,13 @@ wording from public-facing documentation.
   - Smoke tests passed.
   - API tests passed.
   - UI tests passed.
+- README intro was rewritten to focus on reducing manual regression effort,
+  catching release risks earlier, and providing failure evidence.
+- Added a dedicated “Business value” section.
+- Adjusted review guidance and engineering decision wording to read like a real
+  QA automation deliverable.
+- Removed stale README wording that described reset support and Playwright
+  upgrade as future work.
 
 ## Blockers
 
@@ -148,9 +153,4 @@ wording from public-facing documentation.
 
 ## Next task
 
-Choose the next focused maturity task. Good candidates:
-
-- document the non-blocking GitHub Actions annotation in `DEBUGGING.md`;
-- add one cross-user forbidden API test if a second customer account is
-  available;
-- add a small release checklist for framework changes.
+Commit and push the README business-value update.

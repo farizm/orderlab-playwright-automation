@@ -5,9 +5,10 @@
 Public SDET / QA Automation framework for the
 [OrderLab Demo](https://orderlab-playwright-target.lovable.app) application.
 
-The goal is to show a small but realistic automation framework: Playwright,
-TypeScript, Page Object Model, UI tests, API tests, CI, HTML reporting, and
-failure artifacts.
+This automation framework validates the most critical OrderLab ordering and
+admin workflows through UI, API, accessibility, and CI-based checks. It helps
+reduce manual regression effort, catch release risks earlier, and provide clear
+failure evidence when a workflow breaks.
 
 Repository: <https://github.com/farizm/orderlab-playwright-automation>
 CI workflow: <https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml>
@@ -32,24 +33,42 @@ The latest verified run shows the full pipeline passing from a clean GitHub
 Actions environment: TypeScript typecheck, smoke tests, API tests, UI tests, and
 artifact upload.
 
+## Business value
+
+This framework was built as if OrderLab needed a practical regression safety
+net from a single QA automation owner. The focus is on the workflows that would
+hurt the business most if they broke:
+
+- customers must be able to sign in, find products, add items to cart, and place
+  orders;
+- checkout validation must prevent incomplete orders;
+- order totals must be calculated by the server, not trusted from the browser;
+- admins must be able to see customer orders and update order status;
+- protected APIs must reject missing, invalid, or malformed requests;
+- test data must be resettable so CI runs are predictable;
+- failures must produce enough evidence for quick triage.
+
+The suite is intentionally focused. It does not try to automate every possible
+click. It covers the release risks that would create the most manual retesting,
+customer impact, or investigation cost.
+
 ## How to review this repo in 3 minutes
 
-1. Start with the coverage matrix below to see which product risks are covered.
-2. Open `tests/ui/checkout.spec.ts` for a readable UI happy path + validation
-   example.
-3. Open `tests/api/orders.spec.ts` for API positive, negative, and contract
-   checks.
-4. Open `tests/support/api/` to see the API client layer.
+1. Start with the business value section above to understand the risk focus.
+2. Open the coverage matrix below to see which product areas are protected.
+3. Open `tests/ui/checkout.spec.ts` for the main customer order flow.
+4. Open `tests/api/orders.spec.ts` for backend validation, auth, and negative
+   cases.
 5. Open the latest GitHub Actions run to confirm the suite runs from CI and
    publishes reports.
-6. Check the CI evidence screenshot above for a quick visual proof of the latest
-   green pipeline.
+6. Open `docs/PROJECT_FULL_DOCUMENTATION.md` for the full implementation
+   history and architecture explanation.
 
 ## Engineering decisions
 
 This section explains the main trade-offs behind the test architecture.
 
-- I split UI and API coverage by risk. UI tests cover the flows where browser
+- UI and API coverage are split by risk. UI tests cover the flows where browser
   behavior matters, while API tests validate server behavior faster and more
   directly.
 - Page Objects are small and screen-focused. I avoided a large generic
@@ -65,8 +84,8 @@ This section explains the main trade-offs behind the test architecture.
   public demo accounts. Reliability matters more than speed here.
 - Failure artifacts are part of the debugging story: HTML reports, screenshots,
   traces, and GitHub job summaries make failures reviewable without guessing.
-- The project is intentionally small. I chose maintainability and interview
-  explainability over adding every possible tool.
+- The framework is intentionally small. Maintainability and release confidence
+  are prioritized over adding every possible tool.
 
 ## Application under test
 
@@ -90,7 +109,8 @@ customer data, payment processing, or production business logic.
 ## Current test coverage
 
 This is a focused v0.1 automation suite. The goal is not maximum test count; the
-goal is stable coverage of the highest-value customer and admin flows.
+goal is stable coverage of the highest-value customer, admin, API, and test data
+risks.
 
 ### UI scenarios
 
@@ -145,7 +165,7 @@ tests/
   ui/         UI tests
 ```
 
-The suite intentionally keeps Page Objects small and screen-specific. Shared
+The framework intentionally keeps Page Objects small and screen-specific. Shared
 helpers live under `tests/support/` only when they are reused by more than one
 test area. Authenticated UI setup lives in `tests/fixtures.ts` so customer and
 admin login steps are reusable without hiding the behavior under heavy
@@ -241,12 +261,12 @@ The pipeline runs on push and pull request using split jobs:
 3. `api` — API tests and contract checks, after smoke is green.
 4. `ui` — browser UI tests, after smoke is green.
 
-Each Playwright job uploads its own HTML report and failure artifacts so
-reviewers can inspect the exact layer that failed.
+Each Playwright job uploads its own HTML report and failure artifacts so the
+failed layer can be inspected quickly.
 
 Each job also writes a short GitHub Actions summary with the command, purpose,
 and artifact names. This makes the CI run easier to review without opening raw
-logs first.
+logs first and reduces debugging time when a release check fails.
 
 CI stores demo account passwords in GitHub Actions Secrets. Public demo emails,
 URLs, and the Supabase anon key remain in the workflow because they are not
@@ -262,9 +282,8 @@ private credentials for this demo application.
 - API contract helpers validate response shape and important data types.
 - Test data factories prepare common scenario data such as order payloads and
   checkout details.
-- Test reset support is defined as an opt-in contract so the automation
-  framework is ready for deterministic seeded runs once the demo app exposes the
-  endpoint.
+- Test reset support is available through a token-protected endpoint so CI can
+  return the demo app to deterministic seeded data.
 - Accessibility smoke checks use axe-core on key pages and fail on serious or
   critical WCAG A/AA violations.
 - Tests run with one worker because the target is a shared public demo app with
@@ -281,13 +300,12 @@ private credentials for this demo application.
 
 ## Known limitations and next improvements
 
-This repository is intentionally scoped as a public v0.1 automation framework. The
-next improvements would be:
+This repository is intentionally scoped as a focused v0.1 automation framework.
+The next improvements would be:
 
 - keep monitoring reset-based runs for stability as more tests use seeded data;
-- upgrade Playwright to a patched version after validating browser/runtime
-  compatibility;
 - expand negative API checks for forbidden cross-user access;
-- add a public `ARCHITECTURE.md` decision log as the framework evolves;
+- keep `ARCHITECTURE.md` and `docs/DECISIONS.md` updated as the framework
+  evolves;
 - expand order history assertions without making tests depend on old shared
   data.
