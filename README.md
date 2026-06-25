@@ -85,6 +85,8 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Orders API | Read a created order by ID | Authenticated customer can retrieve the created order | `tests/api/orders.spec.ts` |
 | API contracts | Validate product and order response shape | API responses keep expected fields and data types | `tests/api/*.spec.ts` |
 | Orders API | Reject order creation without auth | Protected order endpoint requires bearer token | `tests/api/orders.spec.ts` |
+| Orders API | Admin reads a customer order | Admin role has expected cross-role visibility | `tests/api/orders.spec.ts` |
+| Orders API | Reject unauthenticated or invalid-token order reads | Protected order reads enforce bearer authentication | `tests/api/orders.spec.ts` |
 | Orders API | Return not found for unknown order | Missing valid order IDs are handled clearly | `tests/api/orders.spec.ts` |
 | Orders API | Reject unknown product ID | Invalid order payloads do not create orders | `tests/api/orders.spec.ts` |
 | Orders API | Reject empty items and zero quantity | Malformed order payloads are rejected | `tests/api/orders.spec.ts` |
@@ -97,8 +99,8 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Product catalog | Search and category filter | Product list and seed data validation | Uses stable product names as fixtures |
 | Cart | Add item and verify cart state | Not directly covered | Cart is browser-local state |
 | Checkout | Customer checkout confirmation and required-field validation | Order creation validates server-side pricing and bad product IDs | Dynamic address avoids duplicate-looking data |
-| Order history | Confirmation reads order ID and status | Read created order by ID | Deeper history checks are planned |
-| Admin orders | Admin updates status and verifies persistence | Not directly covered | API admin status tests are planned |
+| Order history | Confirmation reads order ID and status | Read created order by ID with customer/admin authorization checks | Deeper history checks are planned |
+| Admin orders | Admin updates status and verifies persistence | Admin can read customer orders by ID | API admin status update tests are planned |
 
 ## Project structure
 

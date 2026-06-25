@@ -42,11 +42,13 @@ export class OrdersApi {
     });
   }
 
-  async getOrderById(orderId: string, token: string): Promise<APIResponse> {
+  async getOrderById(orderId: string, token?: string): Promise<APIResponse> {
     return this.request.get(`${this.apiBaseUrl}/orders/${orderId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined,
     });
   }
 }

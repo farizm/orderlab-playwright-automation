@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { OrdersApi } from '../support/api/ordersApi';
-import { getCustomerAccessToken } from '../support/auth';
+import { getAdminAccessToken, getCustomerAccessToken } from '../support/auth';
 import { expectOrderContract } from '../support/contracts';
 import {
   createClassicBurgerOrder,
@@ -43,6 +43,23 @@ test('reads a created order by ID through the API @smoke', async ({ request }) =
   expect(unitPrice(fetchedOrder.items[0])).toBe(products.classicBurger.price);
 });
 
+test('allows an admin to read a customer order by ID @regression', async ({
+  request,
+}) => {
+  const ordersApi = new OrdersApi(request);
+  const customerToken = await getCustomerAccessToken();
+  const adminToken = await getAdminAccessToken();
+  const createdOrder = await createClassicBurgerOrder(request, customerToken);
+  const response = await ordersApi.getOrderById(createdOrder.id, adminToken);
+
+  expect(response.status()).toBe(200);
+
+  const fetchedOrder = (await response.json()) as OrderResponse;
+
+  expectOrderContract(fetchedOrder);
+  expect(fetchedOrder.id).toBe(createdOrder.id);
+});
+
 test('rejects creating an order without a bearer token @regression', async ({
   request,
 }) => {
@@ -53,6 +70,31 @@ test('rejects creating an order without a bearer token @regression', async ({
   ]);
 
   expect(response.status()).toBe(401);
+});
+
+test('rejects reading an order without a bearer token @regression', async ({
+  request,
+}) => {
+  const ordersApi = new OrdersApi(request);
+  const token = await getCustomerAccessToken();
+  const createdOrder = await createClassicBurgerOrder(request, token);
+  const response = await ordersApi.getOrderById(createdOrder.id);
+
+  expect(response.status()).toBe(401);
+});
+
+test('rejects reading an order with an invalid bearer token @regression', async ({
+  request,
+}) => {
+  const ordersApi = new OrdersApi(request);
+  const token = await getCustomerAccessToken();
+  const createdOrder = await createClassicBurgerOrder(request, token);
+  const response = await ordersApi.getOrderById(
+    createdOrder.id,
+    'invalid-demo-token',
+  );
+
+  expect([401, 403]).toContain(response.status());
 });
 
 test('returns not found for an unknown order ID @regression', async ({

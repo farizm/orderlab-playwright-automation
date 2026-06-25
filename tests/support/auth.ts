@@ -8,3 +8,11 @@ export async function getCustomerAccessToken(): Promise<string> {
 
   return authApi.signInWithPassword(email, password);
 }
+
+export async function getAdminAccessToken(): Promise<string> {
+  const email = requiredEnv('ADMIN_EMAIL');
+  const password = requiredEnv('ADMIN_PASSWORD');
+  const authApi = new AuthApi();
+
+  return authApi.signInWithPassword(email, password);
+}

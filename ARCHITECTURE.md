@@ -102,6 +102,8 @@ Current approach:
 - order payloads and checkout details are created through
   `tests/support/testDataFactory.ts`;
 - admin status tests create a real customer order before changing its status.
+- API authorization tests use separate customer and admin bearer tokens to make
+  role expectations explicit.
 
 Planned improvement:
 
@@ -125,6 +127,8 @@ API tests cover backend behavior more directly:
 - reading a created order.
 - negative cases for missing authentication, unknown orders, and invalid product
   IDs.
+- authorization checks for admin access to customer orders and invalid bearer
+  tokens.
 
 This split keeps the UI suite focused on critical journeys while using API tests
 for faster validation of server behavior.
