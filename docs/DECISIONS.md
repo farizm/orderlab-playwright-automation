@@ -145,3 +145,22 @@ Trade-off:
 - This is not a full accessibility audit. It is a lightweight automated gate
   that catches obvious serious issues while avoiding noisy failures from
   short-lived third-party UI elements.
+
+## 2026-06-25 — Upgrade Playwright for security maintenance
+
+Decision:
+
+- Upgrade `@playwright/test` from `1.53.0` to pinned version `1.61.1`.
+- Update GitHub Actions to use `mcr.microsoft.com/playwright:v1.61.1-noble`.
+
+Reason:
+
+- `npm audit` reported a high-severity advisory for Playwright versions below
+  `1.55.1`. Keeping the automation runtime patched is part of treating the test
+  framework as production-quality tooling.
+
+Trade-off:
+
+- Browser/runtime upgrades can introduce behavior changes, so the upgrade is
+  verified with typecheck, API tests, smoke tests, accessibility smoke tests,
+  and GitHub Actions.

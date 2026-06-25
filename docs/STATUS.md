@@ -7,16 +7,18 @@ professional SDET portfolio project.
 
 ## Active task
 
-Add lightweight accessibility smoke coverage with axe-core.
+Upgrade Playwright to a patched version and verify local + CI stability.
 
 ## Acceptance criteria
 
-- Add a small axe-core Playwright test.
-- Cover at least the login page and authenticated products page.
-- Fail only on serious or critical WCAG A/AA violations to keep the gate useful
-  and stable.
-- Document the accessibility strategy and any intentional exclusions.
-- `npm run test:a11y` and `npm run typecheck` pass locally.
+- Upgrade `@playwright/test` from `1.53.0` to a version not affected by the
+  current audit advisory.
+- Keep the Playwright version pinned.
+- Update GitHub Actions Playwright Docker image to the matching version.
+- Reinstall local Chromium for the new Playwright runtime.
+- `npm audit`, `npm run typecheck`, `npm run test:api`, `npm run test:smoke`,
+  and `npm run test:a11y` pass locally.
+- Push and verify GitHub Actions is green.
 
 ## Latest evidence
 
@@ -96,6 +98,17 @@ Add lightweight accessibility smoke coverage with axe-core.
   - Smoke tests passed.
   - API tests passed.
   - UI tests passed, including accessibility smoke coverage.
+- Checked current npm version for `@playwright/test`: `1.61.1`.
+- Upgraded `@playwright/test` to pinned version `1.61.1`.
+- Updated GitHub Actions Playwright Docker image to
+  `mcr.microsoft.com/playwright:v1.61.1-noble`.
+- Reinstalled local Chromium with `npx playwright install chromium`.
+- `npm audit --omit=optional` passed with 0 vulnerabilities on 2026-06-25.
+- `npm run typecheck` passed locally on 2026-06-25.
+- `npm run test:api` passed locally with 13 passed on 2026-06-25.
+- `npm run test:smoke` passed locally with 9 passed on 2026-06-25.
+- `npm run test:a11y` passed locally with 2 passed on 2026-06-25.
+- `npm run test:ui` passed locally with 10 passed on 2026-06-25.
 
 ## Blockers
 
@@ -110,4 +123,4 @@ Add lightweight accessibility smoke coverage with axe-core.
 
 ## Next task
 
-Upgrade Playwright to a patched version and verify local + CI stability.
+Commit and push the Playwright upgrade, then verify GitHub Actions is green.
