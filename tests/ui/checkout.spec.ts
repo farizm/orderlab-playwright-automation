@@ -1,26 +1,15 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../fixtures';
 import { CheckoutPage } from '../pages/CheckoutPage';
-import { LoginPage } from '../pages/LoginPage';
 import { OrdersPage } from '../pages/OrdersPage';
 import { ProductsPage } from '../pages/ProductsPage';
 
 test('completes checkout and shows order confirmation @smoke', async ({
-  page,
+  customerPage,
 }) => {
-  const email = process.env.CUSTOMER_EMAIL;
-  const password = process.env.CUSTOMER_PASSWORD;
+  const productsPage = new ProductsPage(customerPage);
+  const checkoutPage = new CheckoutPage(customerPage);
+  const ordersPage = new OrdersPage(customerPage);
 
-  if (!email || !password) {
-    throw new Error('Customer credentials are missing from .env');
-  }
-
-  const loginPage = new LoginPage(page);
-  const productsPage = new ProductsPage(page);
-  const checkoutPage = new CheckoutPage(page);
-  const ordersPage = new OrdersPage(page);
-
-  await loginPage.open();
-  await loginPage.login(email, password);
   await productsPage.addProductToCart('Classic Burger');
 
   await checkoutPage.open();
@@ -29,7 +18,7 @@ test('completes checkout and shows order confirmation @smoke', async ({
     `123 Demo Street ${Date.now()}`,
   );
 
-  await expect(page).toHaveURL(/\/orders(\?.*)?$/);
+  await expect(customerPage).toHaveURL(/\/orders(\?.*)?$/);
   await expect(ordersPage.orderNumber).toBeVisible();
   await expect(ordersPage.orderStatus).toContainText('Pending');
 });

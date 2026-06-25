@@ -1,22 +1,8 @@
-import { expect, test } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
+import { expect, test } from '../fixtures';
 import { ProductsPage } from '../pages/ProductsPage';
 
-test('searches and filters products @regression', async ({ page }) => {
-  const email = process.env.CUSTOMER_EMAIL;
-  const password = process.env.CUSTOMER_PASSWORD;
-
-  if (!email || !password) {
-    throw new Error('Customer credentials are missing from .env');
-  }
-
-  const loginPage = new LoginPage(page);
-  const productsPage = new ProductsPage(page);
-
-  await loginPage.open();
-  await loginPage.login(email, password);
-
-  await expect(page).toHaveURL(/\/products$/);
+test('searches and filters products @regression', async ({ customerPage }) => {
+  const productsPage = new ProductsPage(customerPage);
 
   await productsPage.searchFor('classic');
   await expect(productsPage.productCard('Classic Burger')).toBeVisible();

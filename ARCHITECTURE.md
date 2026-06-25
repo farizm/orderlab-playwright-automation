@@ -26,6 +26,7 @@ clear, reliable framework that can be explained in an interview.
 ```text
 tests/
   api/        API-level tests for public HTTP endpoints
+  fixtures.ts Reusable authenticated customer/admin page fixtures
   pages/      Page Objects for user-facing screens
   support/    Shared helpers, environment access, authentication helpers
   ui/         Browser-based UI tests
@@ -66,6 +67,24 @@ Good Page Object methods in this project describe behavior, for example:
 - `addProductToCart(productName)`
 - `submitOrder(name, address)`
 - `updateStatus(orderId, status)`
+
+## Fixtures
+
+The suite uses Playwright fixtures for authenticated customer and admin pages.
+This removes duplicated login setup from UI tests while keeping the setup easy
+to understand.
+
+Current authenticated fixtures:
+
+- `customerPage` logs in with the public demo customer and starts on the product
+  catalog.
+- `adminPage` logs in with the public demo admin and starts on the admin orders
+  page.
+
+The project does not use persisted `storageState` yet. For this v0.1 portfolio,
+logging in through the UI keeps the setup explicit and interview-friendly. A
+future optimization could replace repeated UI login with generated storage state
+if test runtime becomes a real problem.
 
 ## Test data strategy
 
@@ -143,7 +162,6 @@ later.
 
 The next useful improvements are:
 
-- authenticated session fixtures for customer and admin users;
 - API helpers for creating scenario data;
 - test data reset or seed endpoint;
 - additional negative API coverage for malformed payloads and forbidden access;

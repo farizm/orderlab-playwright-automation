@@ -76,6 +76,7 @@ goal is stable coverage of the highest-value customer and admin flows.
 ```text
 tests/
   api/        API tests for public OrderLab endpoints
+  fixtures.ts Authenticated customer/admin page fixtures
   pages/      Page Objects for UI screens
   support/    Small shared helpers
   ui/         UI tests
@@ -83,7 +84,9 @@ tests/
 
 The suite intentionally keeps Page Objects small and screen-specific. Shared
 helpers live under `tests/support/` only when they are reused by more than one
-test area.
+test area. Authenticated UI setup lives in `tests/fixtures.ts` so customer and
+admin login steps are reusable without hiding the behavior under heavy
+framework layers.
 
 ## Local setup
 
@@ -164,6 +167,7 @@ execution from the GitHub Actions artifact.
 ## Design notes
 
 - Page Objects are small and screen-focused.
+- Customer/admin fixtures remove duplicated login setup from UI tests.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
 - Tests avoid fixed sleeps and use Playwright web-first assertions.
 - Each order-related test creates its own order data.
@@ -180,7 +184,6 @@ This repository is intentionally scoped as a public v0.1 portfolio proof. The
 next improvements would be:
 
 - add a dedicated test data reset or seed endpoint;
-- introduce stronger fixtures for customer/admin authenticated sessions;
 - expand negative API checks for malformed payloads and forbidden access;
 - add a public `ARCHITECTURE.md` decision log as the framework evolves;
 - expand order history assertions without making tests depend on old shared
