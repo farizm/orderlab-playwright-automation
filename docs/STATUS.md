@@ -7,16 +7,13 @@ professional SDET portfolio project.
 
 ## Active task
 
-Push the completed reset endpoint enablement and verify GitHub Actions is green.
+Choose the next focused senior-level improvement after reset endpoint enablement.
 
 ## Acceptance criteria
 
-- Demo app exposes `POST /api/public/test/reset`.
-- Endpoint requires `x-test-token`.
-- Endpoint resets demo orders and re-seeds products idempotently.
-- Local `.env` contains `TEST_API_BASE_URL` and `TEST_RESET_TOKEN`.
-- GitHub Actions has `TEST_RESET_TOKEN` as a secret and passes API tests without
-  skipping reset coverage.
+- Pick one next task from `docs/ROADMAP.md` or Parking Lot.
+- Prefer the highest portfolio impact with the least overengineering.
+- Define acceptance criteria before implementation.
 
 ## Latest evidence
 
@@ -65,19 +62,30 @@ Push the completed reset endpoint enablement and verify GitHub Actions is green.
   `https://orderlab-playwright-target.lovable.app/api/public`.
 - `npm run test:api` passed locally with 13 passed and 0 skipped on 2026-06-25.
 - `npm run typecheck` passed locally on 2026-06-25.
+- Pushed commit `898cf17` to `main`.
+- GitHub Actions run passed on 2026-06-25:
+  `https://github.com/farizm/orderlab-playwright-automation/actions/runs/28179730738`
+  - TypeScript typecheck passed.
+  - Smoke tests passed.
+  - API tests passed with reset coverage enabled.
+  - UI tests passed.
+  - Job summaries and Playwright artifacts were uploaded.
 
 ## Blockers
 
-- None for local API reset coverage. GitHub Actions still needs to be verified
-  after pushing the workflow/docs changes.
+- None.
 
 ## Focused time
 
 - Current session: source-of-truth documentation recovery and CI reviewer
   summary completed; reset endpoint handoff, CI variable wiring, and local API
-  reset verification completed.
+  reset verification completed; GitHub Actions verified green.
 
 ## Next task
 
-Commit and push the current changes, then verify GitHub Actions passes with
-reset tests enabled.
+Decide the next small senior-level improvement. Good candidates:
+
+- add a lightweight accessibility smoke check;
+- add one forbidden cross-user API test if the app can support a second
+  customer;
+- improve README with a short “interview talking points” section.
