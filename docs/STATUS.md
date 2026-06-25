@@ -7,11 +7,14 @@ professional SDET portfolio project.
 
 ## Active task
 
-Add an interview-friendly README section that explains the project decisions.
+Refine README wording so the decision section reads like engineering
+documentation instead of recruiter-facing copy.
 
 ## Acceptance criteria
 
-- README has a concise “Interview talking points” section.
+- README has a concise “Engineering decisions” section.
+- The section uses the intro:
+  “This section explains the main trade-offs behind the test architecture.”
 - The section explains UI/API split, POM design, auth strategy, reset endpoint,
   CI structure, reliability trade-offs, and debugging artifacts.
 - README no longer describes reset support as future-only now that reset tests
@@ -73,10 +76,11 @@ Add an interview-friendly README section that explains the project decisions.
   - API tests passed with reset coverage enabled.
   - UI tests passed.
   - Job summaries and Playwright artifacts were uploaded.
-- README now includes “Interview talking points” for recruiter/interviewer
-  review.
+- README now includes an “Engineering decisions” section for technical review.
 - README reset documentation was updated to reflect that reset coverage is
   enabled and token-protected.
+- README wording was refined to focus on architecture trade-offs instead of
+  recruiter-facing talking points.
 
 ## Blockers
 
@@ -86,8 +90,8 @@ Add an interview-friendly README section that explains the project decisions.
 
 - Current session: source-of-truth documentation recovery and CI reviewer
   summary completed; reset endpoint handoff, CI variable wiring, and local API
-  reset verification completed; GitHub Actions verified green; README interview
-  talking points added.
+  reset verification completed; GitHub Actions verified green; README
+  engineering decisions section added.
 
 ## Next task
 

@@ -43,9 +43,9 @@ artifact upload.
 6. Check the CI evidence screenshot above for a quick visual proof of the latest
    green pipeline.
 
-## Interview talking points
+## Engineering decisions
 
-Use these points to explain the project quickly in an interview:
+This section explains the main trade-offs behind the test architecture.
 
 - I split UI and API coverage by risk. UI tests cover the flows where browser
   behavior matters, while API tests validate server behavior faster and more
