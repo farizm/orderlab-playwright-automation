@@ -174,9 +174,9 @@ GitHub Actions workflow:
 The pipeline runs on push and pull request using split jobs:
 
 1. `typecheck` — TypeScript validation.
-2. `smoke` — tagged smoke tests.
-3. `api` — API tests and contract checks.
-4. `ui` — browser UI tests.
+2. `smoke` — tagged smoke tests and the first functional quality gate.
+3. `api` — API tests and contract checks, after smoke is green.
+4. `ui` — browser UI tests, after smoke is green.
 
 Each Playwright job uploads its own HTML report and failure artifacts so
 reviewers can inspect the exact layer that failed.
@@ -191,6 +191,8 @@ reviewers can inspect the exact layer that failed.
 - API contract helpers validate response shape and important data types.
 - Test data factories prepare common scenario data such as order payloads and
   checkout details.
+- Tests run with one worker because the target is a shared public demo app with
+  public demo accounts. This favors repeatability over speed for portfolio CI.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
 - Tests avoid fixed sleeps and use Playwright web-first assertions.
 - Each order-related test creates its own order data.

@@ -182,7 +182,9 @@ For v0.1, reliability and readability are more important than feature count.
 
 Intentional choices:
 
-- one browser project, Chromium, to keep CI fast and stable;
+- one browser project, Chromium, to keep CI focused and stable;
+- one test worker because the current target is a shared public demo app with
+  public demo accounts;
 - small Page Objects instead of heavy framework layers;
 - public demo credentials only, no real secrets;
 - minimal shared helpers until duplication becomes meaningful;

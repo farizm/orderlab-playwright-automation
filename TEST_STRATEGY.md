@@ -102,12 +102,17 @@ Avoid:
 Every push and pull request runs split CI jobs:
 
 1. TypeScript typecheck;
-2. smoke tests;
-3. API tests;
-4. UI tests;
+2. smoke tests as the first functional quality gate;
+3. API tests after smoke is green;
+4. UI tests after smoke is green;
 5. HTML report and failure artifact upload per Playwright job.
 
 This gives reviewers proof that the project works from a clean checkout.
+
+The suite runs with one worker. That is intentional for v0.1 because the tests
+target a shared public demo app and public demo accounts. Serial execution is a
+small speed trade-off that reduces cross-test interference and keeps CI results
+repeatable.
 
 ## Definition of done for a test
 

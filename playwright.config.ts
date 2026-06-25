@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const baseURL =
   process.env.BASE_URL ?? 'https://orderlab-playwright-target.lovable.app';
@@ -9,10 +9,10 @@ const baseURL =
 export default defineConfig({
   testDir: './tests',
   outputDir: 'test-results',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   timeout: 30_000,
   expect: {
     timeout: 7_000,
