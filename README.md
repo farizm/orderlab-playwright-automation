@@ -79,7 +79,7 @@ tests/
   api/        API tests for public OrderLab endpoints
   fixtures.ts Authenticated customer/admin page fixtures
   pages/      Page Objects for UI screens
-  support/    Environment, auth, and API data helpers
+  support/    Environment, auth, API clients, and test data helpers
   ui/         UI tests
 ```
 
@@ -88,6 +88,8 @@ helpers live under `tests/support/` only when they are reused by more than one
 test area. Authenticated UI setup lives in `tests/fixtures.ts` so customer and
 admin login steps are reusable without hiding the behavior under heavy
 framework layers.
+API clients live under `tests/support/api/` so specs can focus on behavior
+instead of repeating request URLs, headers, and payload shapes.
 
 ## Local setup
 
@@ -169,7 +171,8 @@ execution from the GitHub Actions artifact.
 
 - Page Objects are small and screen-focused.
 - Customer/admin fixtures remove duplicated login setup from UI tests.
-- API helpers keep setup details out of scenario-level API specs.
+- API clients keep request details out of scenario-level API specs.
+- API data helpers prepare common scenario data such as a Classic Burger order.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
 - Tests avoid fixed sleeps and use Playwright web-first assertions.
 - Each order-related test creates its own order data.

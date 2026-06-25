@@ -1,35 +1,19 @@
 import { expect, type APIRequestContext } from '@playwright/test';
-import { requiredEnv } from './env';
+import {
+  type OrderItem,
+  type OrderResponse,
+  OrdersApi,
+} from './api/ordersApi';
+import { type Product, ProductsApi } from './api/productsApi';
 import { products } from './testData';
 
-export type Product = {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-};
-
-export type OrderItem = {
-  productId?: string;
-  product_id?: string;
-  quantity: number;
-  unitPrice?: number;
-  unit_price?: number;
-};
-
-export type OrderResponse = {
-  id: string;
-  status: string;
-  subtotal: number;
-  items: OrderItem[];
-};
+export type { OrderItem, OrderResponse, Product };
 
 export async function getClassicBurger(
   request: APIRequestContext,
 ): Promise<Product> {
-  const apiBaseUrl = requiredEnv('API_BASE_URL');
-  const response = await request.get(`${apiBaseUrl}/products`);
-  const body = (await response.json()) as { products: Product[] };
+  const productsApi = new ProductsApi(request);
+  const body = await productsApi.getProductsBody();
   const classicBurger = body.products.find(
     (product) => product.name === products.classicBurger.name,
   );
@@ -47,21 +31,17 @@ export async function createClassicBurgerOrder(
   request: APIRequestContext,
   token: string,
 ): Promise<OrderResponse> {
-  const apiBaseUrl = requiredEnv('API_BASE_URL');
+  const ordersApi = new OrdersApi(request);
   const classicBurger = await getClassicBurger(request);
-  const response = await request.post(`${apiBaseUrl}/orders`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    data: {
-      items: [
-        {
-          product_id: classicBurger.id,
-          quantity: 2,
-        },
-      ],
-    },
-  });
+  const response = await ordersApi.createOrder(
+    [
+      {
+        product_id: classicBurger.id,
+        quantity: 2,
+      },
+    ],
+    token,
+  );
 
   const responseBody = await response.text();
 

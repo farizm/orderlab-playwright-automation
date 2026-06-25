@@ -28,7 +28,7 @@ tests/
   api/        API-level tests for public HTTP endpoints
   fixtures.ts Reusable authenticated customer/admin page fixtures
   pages/      Page Objects for user-facing screens
-  support/    Shared helpers for environment, auth, and API test data
+  support/    Shared helpers for environment, auth, API clients, and test data
   ui/         Browser-based UI tests
 ```
 
@@ -126,6 +126,20 @@ API tests cover backend behavior more directly:
 
 This split keeps the UI suite focused on critical journeys while using API tests
 for faster validation of server behavior.
+
+## API client layer
+
+HTTP request details are kept in small API client classes:
+
+- `ProductsApi`
+- `OrdersApi`
+
+The clients know endpoint paths, headers, and payload shape. Specs use those
+clients to describe behavior at a higher level. Scenario setup helpers, such as
+creating a Classic Burger order, stay in `tests/support/orders.ts`.
+
+This keeps the framework readable without turning it into a large custom
+abstraction layer.
 
 ## CI and reporting
 

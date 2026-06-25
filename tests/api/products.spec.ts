@@ -1,23 +1,15 @@
 import { expect, test } from '@playwright/test';
-import { requiredEnv } from '../support/env';
+import { ProductsApi } from '../support/api/productsApi';
 import { products } from '../support/testData';
 
 test('reads the public product catalog @smoke', async ({ request }) => {
-  const apiBaseUrl = requiredEnv('API_BASE_URL');
-
-  const response = await request.get(`${apiBaseUrl}/products`);
+  const productsApi = new ProductsApi(request);
+  const response = await productsApi.getProducts();
 
   expect(response.status()).toBe(200);
   expect(response.headers()['content-type']).toContain('application/json');
 
-  const body = (await response.json()) as {
-    products: Array<{
-      id: string;
-      name: string;
-      category: string;
-      price: number;
-    }>;
-  };
+  const body = await productsApi.parseProductsResponse(response);
 
   expect(body.products).toHaveLength(6);
 

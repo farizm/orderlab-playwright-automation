@@ -58,7 +58,8 @@ API tests cover backend behavior directly and faster than the UI:
 - auth and invalid-data negative cases.
 
 API tests are useful because they check server behavior without depending on
-the browser UI.
+the browser UI. Small API client classes hide request URLs, headers, and payload
+details so the spec files stay focused on behavior.
 
 ## Test data approach
 
