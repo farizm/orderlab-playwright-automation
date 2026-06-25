@@ -123,6 +123,17 @@ wording from public-facing documentation.
 - Renamed README title to “OrderLab Playwright Automation Framework”.
 - Removed job-search wording from README and main documentation.
 - Linked full documentation from README.
+- `rg` check confirmed the removed wording no longer appears in README, docs,
+  package metadata, or test code.
+- `npm run typecheck` passed locally on 2026-06-25.
+- Targeted checkout tests passed locally with 2 passed on 2026-06-25.
+- Pushed commit `71391e7` to `main`.
+- GitHub Actions run passed on 2026-06-25:
+  `https://github.com/farizm/orderlab-playwright-automation/actions/runs/28194101322`
+  - TypeScript typecheck passed.
+  - Smoke tests passed.
+  - API tests passed.
+  - UI tests passed.
 
 ## Blockers
 
@@ -137,4 +148,9 @@ wording from public-facing documentation.
 
 ## Next task
 
-Run verification, commit, push, and confirm the public documentation reads cleanly.
+Choose the next focused maturity task. Good candidates:
+
+- document the non-blocking GitHub Actions annotation in `DEBUGGING.md`;
+- add one cross-user forbidden API test if a second customer account is
+  available;
+- add a small release checklist for framework changes.
