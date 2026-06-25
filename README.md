@@ -12,7 +12,7 @@ failure artifacts.
 Repository: <https://github.com/farizm/orderlab-playwright-automation>
 CI workflow: <https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml>
 Latest verified green run:
-<https://github.com/farizm/orderlab-playwright-automation/actions/runs/28181526145>
+<https://github.com/farizm/orderlab-playwright-automation/actions/runs/28182368442>
 
 Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)  
 Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)  

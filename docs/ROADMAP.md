@@ -17,6 +17,7 @@ a time.
 - GitHub Secrets for demo passwords.
 - Opt-in test data reset contract and tests.
 - Lightweight axe-core accessibility smoke checks.
+- Playwright upgraded to patched version `1.61.1` with matching CI Docker image.
 
 ## Active improvement path
 
@@ -78,6 +79,8 @@ Acceptance criteria:
 - Playwright is upgraded to a version that resolves the current audit advisory.
 - CI Docker image matches the Playwright package version.
 - `npm run typecheck`, `npm run test:a11y`, `npm run test:api`, and CI pass.
+
+Status: completed for Playwright `1.61.1`.
 
 ## Parking lot
 
