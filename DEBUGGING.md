@@ -12,6 +12,7 @@ npm run typecheck
 npm run test:api
 npm run test:smoke
 npm run test:ui
+npm run test:a11y
 ```
 
 If only one spec fails, run that file directly:
@@ -54,6 +55,13 @@ ADMIN_PASSWORD
 For local runs, they should be in `.env`. In GitHub Actions, demo passwords are
 stored as repository secrets.
 
+For cross-customer authorization coverage, also check:
+
+```bash
+SECOND_CUSTOMER_EMAIL
+SECOND_CUSTOMER_PASSWORD
+```
+
 ## CI failures
 
 The GitHub Actions workflow is split by layer:
@@ -70,20 +78,19 @@ Open the failed job first, then download its artifacts:
 
 ## Test data issues
 
-The current v0.1 strategy is isolation-based:
+The current strategy combines isolation and reset:
 
 - tests create fresh orders;
 - tests use predictable seeded products;
 - tests do not depend on old order history;
-- there is no destructive cleanup against the public demo database.
+- a token-protected reset endpoint returns demo data to a known state.
 
-If order-related tests become noisy, prefer adding a dedicated reset endpoint in
-the demo app before adding complex cleanup logic to the test framework.
+If order-related tests become noisy, verify the reset endpoint before adding
+complex cleanup logic to the test framework.
 
-## Test reset endpoint is skipped
+## Test reset endpoint fails or is skipped
 
-The reset contract tests are opt-in. They are skipped unless both variables are
-configured:
+The reset contract tests need both variables:
 
 ```bash
 TEST_API_BASE_URL
@@ -91,6 +98,19 @@ TEST_RESET_TOKEN
 ```
 
 See `docs/TEST_DATA_RESET_CONTRACT.md` before enabling them in CI.
+
+Expected behavior:
+
+- valid token returns `200`;
+- missing token returns `401` or `403`;
+- seeded products remain available after reset.
+
+## GitHub Actions annotation about Node 20
+
+GitHub may show a non-blocking annotation that an action targets Node.js 20
+while GitHub forces it to run on Node.js 24. This is currently an annotation,
+not a failing check. Treat it as a maintenance note unless the job starts
+failing.
 
 ## Locator issues
 

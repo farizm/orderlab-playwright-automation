@@ -7,17 +7,16 @@ professional SDET framework.
 
 ## Active task
 
-Enable cross-user order authorization coverage with a real second demo customer.
+Add a release checklist that connects test coverage to merge/deploy decisions.
 
 ## Acceptance criteria
 
-- Add second-customer env variables.
-- Add auth helper support for a second customer.
-- Add API regression coverage that rejects one customer reading another
-  customer's order.
-- Configure local and CI credentials so the test runs instead of skipping.
-- Update README, TEST_STRATEGY, and ARCHITECTURE.
-- Run typecheck and API tests.
+- Add `RELEASE_CHECKLIST.md`.
+- Cover local checks, CI gates, reset checks, artifact review, merge/deploy
+  decision criteria, and escalation notes.
+- Link the checklist from README.
+- Update debugging guidance where it was outdated.
+- Run a small verification command.
 
 ## Latest evidence
 
@@ -173,6 +172,12 @@ Enable cross-user order authorization coverage with a real second demo customer.
   - Smoke tests passed.
   - API tests passed with cross-user authorization coverage enabled.
   - UI tests passed.
+- Added `RELEASE_CHECKLIST.md` with local checks, CI gates, reset verification,
+  artifact review, merge/deploy criteria, and escalation notes.
+- Linked the checklist from README.
+- Updated `DEBUGGING.md` to reflect current reset strategy, a11y command,
+  second-customer credentials, and the non-blocking GitHub Actions Node
+  annotation.
 
 ## Blockers
 
@@ -187,4 +192,5 @@ Enable cross-user order authorization coverage with a real second demo customer.
 
 ## Next task
 
-Choose the next focused maturity task.
+Run verification, commit, push, and confirm the checklist is available from
+README.

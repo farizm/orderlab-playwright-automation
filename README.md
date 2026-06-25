@@ -19,6 +19,7 @@ Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)
 Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)  
 AI-assisted QA workflow: [AI_QA_WORKFLOW.md](./AI_QA_WORKFLOW.md)  
 Debugging guide: [DEBUGGING.md](./DEBUGGING.md)  
+Release checklist: [RELEASE_CHECKLIST.md](./RELEASE_CHECKLIST.md)  
 Full project documentation:
 [docs/PROJECT_FULL_DOCUMENTATION.md](./docs/PROJECT_FULL_DOCUMENTATION.md)  
 Test data reset contract: [docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md)  
@@ -64,6 +65,8 @@ customer impact, or investigation cost.
    publishes reports.
 6. Open `docs/PROJECT_FULL_DOCUMENTATION.md` for the full implementation
    history and architecture explanation.
+7. Open `RELEASE_CHECKLIST.md` to see how the framework supports release
+   decisions.
 
 ## Engineering decisions
 
@@ -106,6 +109,7 @@ customer data, payment processing, or production business logic.
 - npm
 - GitHub Actions
 - Playwright HTML report, screenshots, and traces
+- Release checklist for merge/deploy quality gates
 
 ## Current test coverage
 

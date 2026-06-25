@@ -14,6 +14,7 @@ a time.
 - GitHub Actions split into typecheck, smoke, API, and UI jobs.
 - CI artifacts for Playwright reports and failure evidence.
 - README, architecture, test strategy, debugging guide, and AI QA workflow docs.
+- Release checklist for merge/deploy quality gates.
 - Full beginner-friendly project documentation.
 - GitHub Secrets for demo passwords.
 - Opt-in test data reset contract and tests.
