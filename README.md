@@ -1,6 +1,6 @@
 # OrderLab Playwright Automation
 
-[![Playwright CI](https://github.com/bioverse-ai/orderlab-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/bioverse-ai/orderlab-playwright-automation/actions/workflows/playwright.yml)
+[![Playwright CI](https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml)
 
 Public SDET / QA Automation portfolio project for the
 [OrderLab Demo](https://orderlab-playwright-target.lovable.app) application.
@@ -9,10 +9,11 @@ The goal is to show a small but realistic automation framework: Playwright,
 TypeScript, Page Object Model, UI tests, API tests, CI, HTML reporting, and
 failure artifacts.
 
-Repository: <https://github.com/bioverse-ai/orderlab-playwright-automation>
-CI workflow: <https://github.com/bioverse-ai/orderlab-playwright-automation/actions/workflows/playwright.yml>
+Repository: <https://github.com/farizm/orderlab-playwright-automation>
+CI workflow: <https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml>
 
-Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)
+Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)  
+Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)
 
 ## Application under test
 

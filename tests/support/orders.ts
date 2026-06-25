@@ -1,5 +1,6 @@
 import { expect, type APIRequestContext } from '@playwright/test';
 import { requiredEnv } from './env';
+import { products } from './testData';
 
 export type Product = {
   id: string;
@@ -30,11 +31,13 @@ export async function getClassicBurger(
   const response = await request.get(`${apiBaseUrl}/products`);
   const body = (await response.json()) as { products: Product[] };
   const classicBurger = body.products.find(
-    (product) => product.name === 'Classic Burger',
+    (product) => product.name === products.classicBurger.name,
   );
 
   if (!classicBurger) {
-    throw new Error('Classic Burger was not found in the product catalog');
+    throw new Error(
+      `${products.classicBurger.name} was not found in the product catalog`,
+    );
   }
 
   return classicBurger;

@@ -3,6 +3,12 @@ import { AdminOrdersPage } from '../pages/AdminOrdersPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
 import { OrdersPage } from '../pages/OrdersPage';
 import { ProductsPage } from '../pages/ProductsPage';
+import {
+  checkoutCustomers,
+  orderStatuses,
+  products,
+  uniqueAddress,
+} from '../support/testData';
 
 test('admin updates a created order status @smoke', async ({
   adminPage,
@@ -12,11 +18,11 @@ test('admin updates a created order status @smoke', async ({
   const checkoutPage = new CheckoutPage(customerPage);
   const ordersPage = new OrdersPage(customerPage);
 
-  await productsPage.addProductToCart('Classic Burger');
+  await productsPage.addProductToCart(products.classicBurger.name);
   await checkoutPage.open();
   await checkoutPage.submitOrder(
-    'Admin Status Test Customer',
-    `456 Admin Test Street ${Date.now()}`,
+    checkoutCustomers.adminStatusCustomer.name,
+    uniqueAddress(checkoutCustomers.adminStatusCustomer.addressPrefix),
   );
 
   const orderId = (await ordersPage.orderNumber.textContent())?.trim();
@@ -30,7 +36,7 @@ test('admin updates a created order status @smoke', async ({
   await adminPage.reload();
   await expect(adminOrdersPage.orderRow(orderId)).toBeVisible();
 
-  await adminOrdersPage.updateStatus(orderId, 'Preparing');
+  await adminOrdersPage.updateStatus(orderId, orderStatuses.preparing);
   await expect(adminOrdersPage.statusSelect(orderId)).toHaveValue(/preparing/i);
 
   await adminPage.reload();

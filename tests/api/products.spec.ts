@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { requiredEnv } from '../support/env';
+import { products } from '../support/testData';
 
 test('reads the public product catalog @smoke', async ({ request }) => {
   const apiBaseUrl = requiredEnv('API_BASE_URL');
@@ -21,11 +22,11 @@ test('reads the public product catalog @smoke', async ({ request }) => {
   expect(body.products).toHaveLength(6);
 
   const classicBurger = body.products.find(
-    (product) => product.name === 'Classic Burger',
+    (product) => product.name === products.classicBurger.name,
   );
 
   expect(classicBurger).toMatchObject({
-    category: 'Burgers',
-    price: 12.99,
+    category: products.classicBurger.category,
+    price: products.classicBurger.price,
   });
 });

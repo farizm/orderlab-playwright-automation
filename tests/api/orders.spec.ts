@@ -7,6 +7,7 @@ import {
   type OrderResponse,
   unitPrice,
 } from '../support/orders';
+import { invalidIds, products } from '../support/testData';
 
 test('creates an order through the API @smoke', async ({
   browser,
@@ -20,7 +21,7 @@ test('creates an order through the API @smoke', async ({
   expect(order.subtotal).toBe(25.98);
   expect(order.items).toHaveLength(1);
   expect(order.items[0].quantity).toBe(2);
-  expect(unitPrice(order.items[0])).toBe(12.99);
+  expect(unitPrice(order.items[0])).toBe(products.classicBurger.price);
 });
 
 test('reads a created order by ID through the API @smoke', async ({
@@ -45,7 +46,7 @@ test('reads a created order by ID through the API @smoke', async ({
   expect(fetchedOrder.subtotal).toBe(25.98);
   expect(fetchedOrder.items).toHaveLength(1);
   expect(fetchedOrder.items[0].quantity).toBe(2);
-  expect(unitPrice(fetchedOrder.items[0])).toBe(12.99);
+  expect(unitPrice(fetchedOrder.items[0])).toBe(products.classicBurger.price);
 });
 
 test('rejects creating an order without a bearer token @regression', async ({
@@ -73,9 +74,8 @@ test('returns not found for an unknown order ID @regression', async ({
 }) => {
   const apiBaseUrl = requiredEnv('API_BASE_URL');
   const token = await getCustomerAccessToken(browser);
-  const unknownOrderId = '00000000-0000-4000-8000-000000000000';
   const response = await request.get(
-    `${apiBaseUrl}/orders/${unknownOrderId}`,
+    `${apiBaseUrl}/orders/${invalidIds.unknownOrderId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ test('rejects creating an order with an unknown product ID @regression', async (
     data: {
       items: [
         {
-          product_id: 'unknown-product-id',
+          product_id: invalidIds.unknownProductId,
           quantity: 1,
         },
       ],
