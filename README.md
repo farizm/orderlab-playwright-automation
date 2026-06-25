@@ -79,6 +79,7 @@ customer data, payment processing, or production business logic.
 ## Tech stack
 
 - Playwright Test
+- axe-core for lightweight accessibility smoke checks
 - TypeScript
 - npm
 - GitHub Actions
@@ -101,6 +102,7 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Checkout | Customer completes checkout and sees confirmation | End-to-end order creation works from UI | `tests/ui/checkout.spec.ts` |
 | Checkout | Empty checkout fields show validation errors | Required customer details are enforced before order creation | `tests/ui/checkout.spec.ts` |
 | Admin | Admin updates a created order status | Admin workflow can manage real customer orders | `tests/ui/admin-orders.spec.ts` |
+| Accessibility | Login and products pages have no serious WCAG A/AA violations | Core pages keep a basic accessibility quality gate | `tests/ui/accessibility.spec.ts` |
 
 ### API scenarios
 
@@ -128,6 +130,7 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Checkout | Customer checkout confirmation and required-field validation | Order creation validates server-side pricing and bad product IDs | Dynamic address avoids duplicate-looking data |
 | Order history | Confirmation reads order ID and status | Read created order by ID with customer/admin authorization checks | Deeper history checks are planned |
 | Admin orders | Admin updates status and verifies persistence | Admin can read customer orders by ID | API admin status update tests are planned |
+| Accessibility | Login and products pages checked with axe-core | Not applicable | Transient toast notifications are excluded from page-level scans |
 
 ## Project structure
 
@@ -177,6 +180,7 @@ npm run test:smoke
 npm run test:regression
 npm run test:ui
 npm run test:api
+npm run test:a11y
 npm run test:headed
 ```
 
@@ -259,6 +263,8 @@ private credentials for this demo application.
 - Test reset support is defined as an opt-in contract so the automation
   framework is ready for deterministic seeded runs once the demo app exposes the
   endpoint.
+- Accessibility smoke checks use axe-core on key pages and fail on serious or
+  critical WCAG A/AA violations.
 - Tests run with one worker because the target is a shared public demo app with
   public demo accounts. This favors repeatability over speed for portfolio CI.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
@@ -277,6 +283,8 @@ This repository is intentionally scoped as a public v0.1 portfolio proof. The
 next improvements would be:
 
 - keep monitoring reset-based runs for stability as more tests use seeded data;
+- upgrade Playwright to a patched version after validating browser/runtime
+  compatibility;
 - expand negative API checks for forbidden cross-user access;
 - add a public `ARCHITECTURE.md` decision log as the framework evolves;
 - expand order history assertions without making tests depend on old shared

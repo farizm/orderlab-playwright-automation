@@ -126,3 +126,22 @@ Trade-off:
 - The endpoint is still protected by `x-test-token`, but the URL itself is
   publicly reachable. This is acceptable for the demo because the token is
   stored in local `.env` and GitHub Secrets, and no real customer data exists.
+
+## 2026-06-25 — Add lightweight accessibility smoke checks
+
+Decision:
+
+- Add axe-core smoke checks for the login page and authenticated products page.
+- Fail only on serious or critical WCAG A/AA violations.
+- Exclude transient toast notifications from page-level scans.
+
+Reason:
+
+- Accessibility is a meaningful quality signal for an SDET portfolio, but the
+  first iteration should stay small and stable.
+
+Trade-off:
+
+- This is not a full accessibility audit. It is a lightweight automated gate
+  that catches obvious serious issues while avoiding noisy failures from
+  short-lived third-party UI elements.

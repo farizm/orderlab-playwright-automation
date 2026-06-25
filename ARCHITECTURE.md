@@ -17,6 +17,7 @@ The automation project is designed to demonstrate:
 - stable selectors and accessible locators;
 - CI execution with reports and traces;
 - practical test data handling.
+- lightweight accessibility smoke coverage.
 
 The goal is not to imitate a large enterprise framework. The goal is a small,
 clear, reliable framework that can be explained in an interview.
@@ -121,6 +122,7 @@ UI tests cover the browser flows that a real user would perform:
 - cart behavior;
 - checkout validation and submission;
 - admin order status update.
+- accessibility smoke checks on high-value pages.
 
 API tests cover backend behavior more directly:
 
@@ -134,6 +136,19 @@ API tests cover backend behavior more directly:
 
 This split keeps the UI suite focused on critical journeys while using API tests
 for faster validation of server behavior.
+
+## Accessibility checks
+
+The suite includes a small axe-core smoke layer for key pages. These checks fail
+on serious or critical WCAG A/AA violations.
+
+The goal is not to replace a full accessibility review. The goal is to add a
+low-cost quality gate that catches obvious issues and demonstrates that
+accessibility is part of the test strategy.
+
+Transient toast notifications are excluded from page-level scans because they
+are short-lived third-party UI elements. They can be covered with a separate
+focused test if they become a higher product risk.
 
 ## API client layer
 

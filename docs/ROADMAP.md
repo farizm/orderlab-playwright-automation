@@ -16,6 +16,7 @@ a time.
 - README, architecture, test strategy, debugging guide, and AI QA workflow docs.
 - GitHub Secrets for demo passwords.
 - Opt-in test data reset contract and tests.
+- Lightweight axe-core accessibility smoke checks.
 
 ## Active improvement path
 
@@ -68,12 +69,21 @@ Acceptance criteria:
 - Known limitations are explicit and honest.
 - No private secrets or `.env` are committed.
 
+### 5. Dependency security upgrade
+
+Goal: keep the automation runtime current enough for public portfolio review.
+
+Acceptance criteria:
+
+- Playwright is upgraded to a version that resolves the current audit advisory.
+- CI Docker image matches the Playwright package version.
+- `npm run typecheck`, `npm run test:a11y`, `npm run test:api`, and CI pass.
+
 ## Parking lot
 
 Do not start these until the active path above is done:
 
 - Allure reporting;
-- accessibility smoke checks;
 - multi-browser CI;
 - scheduled CI;
 - Dockerized local environment;

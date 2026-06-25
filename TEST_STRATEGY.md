@@ -15,6 +15,7 @@ The suite focuses on the main user journeys:
 - checkout validation and order confirmation;
 - admin order status management;
 - product and order API behavior;
+- lightweight accessibility smoke checks;
 - important negative cases such as invalid login, missing auth, unknown orders,
   and invalid product IDs.
 
@@ -66,6 +67,16 @@ details so the spec files stay focused on behavior.
 API authentication is handled by a small auth client that uses the public demo
 Supabase password grant. API tests do not depend on browser login state or
 localStorage.
+
+### Accessibility smoke tests
+
+Accessibility smoke tests use axe-core on a small set of high-value pages. The
+goal is not a full manual accessibility audit. The goal is to catch serious or
+critical WCAG A/AA violations early while keeping the suite fast and stable.
+
+Transient toast notifications are excluded from page-level scans because they
+are temporary third-party UI elements. If toast accessibility becomes important
+to the product risk profile, it should be tested with a separate focused check.
 
 ## Test data approach
 
@@ -137,7 +148,8 @@ When improving the suite, prefer this order:
 2. improve readability;
 3. improve test data control;
 4. add meaningful negative coverage;
-5. only then add more test count.
+5. add targeted accessibility checks where they protect important user flows;
+6. only then add more test count.
 
 More tests are not automatically better. A smaller stable suite is more valuable
 than a large flaky one.

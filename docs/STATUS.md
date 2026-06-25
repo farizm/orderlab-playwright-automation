@@ -7,19 +7,16 @@ professional SDET portfolio project.
 
 ## Active task
 
-Refine README wording so the decision section reads like engineering
-documentation instead of recruiter-facing copy.
+Add lightweight accessibility smoke coverage with axe-core.
 
 ## Acceptance criteria
 
-- README has a concise “Engineering decisions” section.
-- The section uses the intro:
-  “This section explains the main trade-offs behind the test architecture.”
-- The section explains UI/API split, POM design, auth strategy, reset endpoint,
-  CI structure, reliability trade-offs, and debugging artifacts.
-- README no longer describes reset support as future-only now that reset tests
-  are enabled.
-- A small verification command passes.
+- Add a small axe-core Playwright test.
+- Cover at least the login page and authenticated products page.
+- Fail only on serious or critical WCAG A/AA violations to keep the gate useful
+  and stable.
+- Document the accessibility strategy and any intentional exclusions.
+- `npm run test:a11y` and `npm run typecheck` pass locally.
 
 ## Latest evidence
 
@@ -81,6 +78,17 @@ documentation instead of recruiter-facing copy.
   enabled and token-protected.
 - README wording was refined to focus on architecture trade-offs instead of
   recruiter-facing talking points.
+- Added `@axe-core/playwright`.
+- Added `tests/ui/accessibility.spec.ts`.
+- Added `npm run test:a11y`.
+- `npm run test:a11y` passed locally with 2 tests on 2026-06-25.
+- `npm run typecheck` passed locally after adding accessibility coverage on
+  2026-06-25.
+- README, TEST_STRATEGY, and ARCHITECTURE now document the accessibility smoke
+  layer.
+- `npm audit` reports a high-severity advisory for Playwright `<1.55.1`; this
+  existed before the a11y work and should be handled as the next focused
+  dependency upgrade task.
 
 ## Blockers
 
@@ -91,8 +99,8 @@ documentation instead of recruiter-facing copy.
 - Current session: source-of-truth documentation recovery and CI reviewer
   summary completed; reset endpoint handoff, CI variable wiring, and local API
   reset verification completed; GitHub Actions verified green; README
-  engineering decisions section added.
+  engineering decisions section added; accessibility smoke coverage added.
 
 ## Next task
 
-Run a small verification command, then commit/push the README maturity update.
+Upgrade Playwright to a patched version and verify local + CI stability.
