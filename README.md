@@ -13,7 +13,7 @@ failure evidence when a workflow breaks.
 Repository: <https://github.com/farizm/orderlab-playwright-automation>
 CI workflow: <https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml>
 Latest verified green run:
-<https://github.com/farizm/orderlab-playwright-automation/actions/runs/28198070751>
+<https://github.com/farizm/orderlab-playwright-automation/actions/runs/28198408807>
 
 Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)  
 Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)  

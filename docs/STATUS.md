@@ -178,6 +178,17 @@ Add a release checklist that connects test coverage to merge/deploy decisions.
 - Updated `DEBUGGING.md` to reflect current reset strategy, a11y command,
   second-customer credentials, and the non-blocking GitHub Actions Node
   annotation.
+- `npm run typecheck` passed locally on 2026-06-25 after release checklist
+  documentation changes.
+- Pushed commit `4256a31` to `main`.
+- GitHub Actions run passed on 2026-06-25:
+  `https://github.com/farizm/orderlab-playwright-automation/actions/runs/28198408807`
+  - TypeScript typecheck passed.
+  - Smoke tests passed.
+  - API tests passed.
+  - UI tests passed.
+- README latest verified green run link now points to the release checklist
+  verification run.
 
 ## Blockers
 
@@ -192,5 +203,5 @@ Add a release checklist that connects test coverage to merge/deploy decisions.
 
 ## Next task
 
-Run verification, commit, push, and confirm the checklist is available from
-README.
+Choose the next maturity improvement after release governance is now documented
+and verified in CI.
