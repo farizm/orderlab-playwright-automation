@@ -11,6 +11,8 @@ env:
   SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxcmhqbWtxbnRmZW5tc25vd25sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5OTE5ODMsImV4cCI6MjA5NzU2Nzk4M30.OduzxbhJeLGGT01CkIxCr4vO3UgH2nDRf2MrQGsj54c
   CUSTOMER_EMAIL: customer@example.com
   CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD }}
+  SECOND_CUSTOMER_EMAIL: ${{ secrets.SECOND_CUSTOMER_EMAIL }}
+  SECOND_CUSTOMER_PASSWORD: ${{ secrets.SECOND_CUSTOMER_PASSWORD }}
   ADMIN_EMAIL: admin@example.com
   ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
   TEST_API_BASE_URL: https://orderlab-playwright-target.lovable.app/api/public

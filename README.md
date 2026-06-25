@@ -250,10 +250,9 @@ documented in
 application-side implementation notes are in
 [docs/LOVABLE_RESET_IMPLEMENTATION.md](./docs/LOVABLE_RESET_IMPLEMENTATION.md).
 
-`SECOND_CUSTOMER_EMAIL` and `SECOND_CUSTOMER_PASSWORD` are optional until a
-second demo customer is available. When configured locally and in GitHub
-Secrets, the API suite also verifies that one customer cannot read another
-customer's order.
+`SECOND_CUSTOMER_EMAIL` and `SECOND_CUSTOMER_PASSWORD` are used for
+cross-customer authorization coverage. They let the API suite verify that one
+customer cannot read another customer's order.
 
 ## CI
 
@@ -304,8 +303,8 @@ private credentials for this demo application.
   require bearer authentication.
 - API order tests obtain a customer bearer token through Supabase password grant,
   then call the HTTP API directly.
-- Cross-customer authorization coverage is opt-in until a second demo customer
-  exists in the app environment.
+- Cross-customer authorization coverage uses a second demo customer to verify
+  order data isolation between accounts.
 - CI enables Playwright traces for the report artifact; local runs use
   lighter retry-only traces.
 

@@ -165,13 +165,13 @@ Trade-off:
   verified with typecheck, API tests, smoke tests, accessibility smoke tests,
   and GitHub Actions.
 
-## 2026-06-25 — Add opt-in cross-customer authorization coverage
+## 2026-06-25 — Add cross-customer authorization coverage
 
 Decision:
 
 - Add an API regression test that verifies one customer cannot read another
   customer's order.
-- Keep the test skipped until second-customer credentials are configured.
+- Use a second demo customer so the check runs in CI.
 
 Reason:
 
@@ -180,5 +180,6 @@ Reason:
 
 Trade-off:
 
-- The test requires a second demo account. Until the app provides that account,
-  the expectation is documented and ready without making CI red.
+- The test requires a second demo account and additional CI secrets, but it
+  turns an important access-control expectation into an executable regression
+  check.

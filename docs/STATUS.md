@@ -7,15 +7,15 @@ professional SDET framework.
 
 ## Active task
 
-Add cross-user order authorization coverage as an opt-in API regression test.
+Enable cross-user order authorization coverage with a real second demo customer.
 
 ## Acceptance criteria
 
-- Add optional second-customer env variables.
+- Add second-customer env variables.
 - Add auth helper support for a second customer.
 - Add API regression coverage that rejects one customer reading another
   customer's order.
-- Keep the test skipped until second-customer credentials are configured.
+- Configure local and CI credentials so the test runs instead of skipping.
 - Update README, TEST_STRATEGY, and ARCHITECTURE.
 - Run typecheck and API tests.
 
@@ -158,6 +158,14 @@ Add cross-user order authorization coverage as an opt-in API regression test.
   - API tests passed with the cross-user test skipped until second-customer
     credentials are configured.
   - UI tests passed.
+- Verified `customer2@example.com` can authenticate through Supabase password
+  grant.
+- Added second-customer credentials to local `.env`.
+- Added `SECOND_CUSTOMER_EMAIL` and `SECOND_CUSTOMER_PASSWORD` to GitHub
+  Actions Secrets.
+- Wired second-customer secrets into GitHub Actions workflow env.
+- `npm run test:api` passed locally on 2026-06-25 with 14 passed and 0 skipped.
+  The cross-user authorization test now runs for real.
 
 ## Blockers
 
@@ -172,6 +180,5 @@ Add cross-user order authorization coverage as an opt-in API regression test.
 
 ## Next task
 
-Create a second demo customer in the app, add credentials to local `.env` and
-GitHub Secrets, then verify the cross-user authorization test runs instead of
-skipping.
+Commit, push, and verify GitHub Actions passes with cross-user authorization
+coverage enabled.

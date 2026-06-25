@@ -15,7 +15,7 @@ The suite focuses on the main user journeys:
 - checkout validation and order confirmation;
 - admin order status management;
 - product and order API behavior;
-- cross-user order authorization when a second demo customer is configured;
+- cross-user order authorization with a second demo customer;
 - lightweight accessibility smoke checks;
 - important negative cases such as invalid login, missing auth, unknown orders,
   and invalid product IDs.
@@ -60,8 +60,7 @@ API tests cover backend behavior directly and faster than the UI:
 - admin visibility into customer orders;
 - product and order response contract checks;
 - auth, malformed payload, invalid-token, and invalid-data negative cases.
-- customer data isolation across accounts when second-customer credentials are
-  available.
+- customer data isolation across accounts.
 
 API tests are useful because they check server behavior without depending on
 the browser UI. Small API client classes hide request URLs, headers, and payload
@@ -86,7 +85,7 @@ to the product risk profile, it should be tested with a separate focused check.
 Test data is simple and predictable:
 
 - public demo accounts come from environment variables;
-- optional second-customer credentials enable cross-user authorization coverage;
+- second-customer credentials enable cross-user authorization coverage;
 - seeded products are stable and safe to use in tests;
 - order tests create fresh orders during the run;
 - dynamic addresses use timestamps so repeated runs are easy to distinguish;
