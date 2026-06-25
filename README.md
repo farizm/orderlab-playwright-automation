@@ -18,6 +18,7 @@ Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)
 Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)  
 AI-assisted QA workflow: [AI_QA_WORKFLOW.md](./AI_QA_WORKFLOW.md)
 Debugging guide: [DEBUGGING.md](./DEBUGGING.md)
+Test data reset contract: [docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md)
 
 ## CI evidence
 
@@ -90,6 +91,7 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Orders API | Return not found for unknown order | Missing valid order IDs are handled clearly | `tests/api/orders.spec.ts` |
 | Orders API | Reject unknown product ID | Invalid order payloads do not create orders | `tests/api/orders.spec.ts` |
 | Orders API | Reject empty items and zero quantity | Malformed order payloads are rejected | `tests/api/orders.spec.ts` |
+| Test data API | Reset seeded demo data when endpoint is available | Test environment can return to a known state | `tests/api/test-data.spec.ts` |
 
 ## Coverage matrix
 
@@ -173,10 +175,16 @@ CUSTOMER_EMAIL=customer@example.com
 CUSTOMER_PASSWORD=CustomerDemo123!
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=AdminDemo123!
+TEST_API_BASE_URL=
+TEST_RESET_TOKEN=
 ```
 
 `.env` is ignored by Git. The committed `.env.example` uses only public demo
 fixtures.
+
+`TEST_API_BASE_URL` and `TEST_RESET_TOKEN` are optional until the demo app
+exposes the test-only reset endpoint documented in
+[docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md).
 
 ## CI
 
@@ -210,6 +218,9 @@ private credentials for this demo application.
 - API contract helpers validate response shape and important data types.
 - Test data factories prepare common scenario data such as order payloads and
   checkout details.
+- Test reset support is defined as an opt-in contract so the automation
+  framework is ready for deterministic seeded runs once the demo app exposes the
+  endpoint.
 - Tests run with one worker because the target is a shared public demo app with
   public demo accounts. This favors repeatability over speed for portfolio CI.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
@@ -227,7 +238,8 @@ private credentials for this demo application.
 This repository is intentionally scoped as a public v0.1 portfolio proof. The
 next improvements would be:
 
-- add a dedicated test data reset or cleanup endpoint;
+- implement the test data reset endpoint in the demo app and enable the opt-in
+  reset tests in CI;
 - expand negative API checks for forbidden cross-user access;
 - add a public `ARCHITECTURE.md` decision log as the framework evolves;
 - expand order history assertions without making tests depend on old shared

@@ -80,6 +80,18 @@ The current v0.1 strategy is isolation-based:
 If order-related tests become noisy, prefer adding a dedicated reset endpoint in
 the demo app before adding complex cleanup logic to the test framework.
 
+## Test reset endpoint is skipped
+
+The reset contract tests are opt-in. They are skipped unless both variables are
+configured:
+
+```bash
+TEST_API_BASE_URL
+TEST_RESET_TOKEN
+```
+
+See `docs/TEST_DATA_RESET_CONTRACT.md` before enabling them in CI.
+
 ## Locator issues
 
 Prefer this order:

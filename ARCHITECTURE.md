@@ -104,6 +104,8 @@ Current approach:
 - admin status tests create a real customer order before changing its status.
 - API authorization tests use separate customer and admin bearer tokens to make
   role expectations explicit.
+- test reset support is implemented as an opt-in API contract until the demo app
+  exposes `POST /api/test/reset`.
 
 Planned improvement:
 

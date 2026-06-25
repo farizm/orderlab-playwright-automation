@@ -78,6 +78,8 @@ Test data is simple and predictable:
 - shared constants live in `tests/support/testData.ts`.
 - factories in `tests/support/testDataFactory.ts` create reusable order payloads
   and checkout details.
+- an opt-in reset contract exists for `POST /api/test/reset` once the demo app
+  exposes it.
 
 Cleanup strategy for v0.1 is isolation-based: tests create unique data and do
 not depend on old orders. The next application-level improvement would be a
