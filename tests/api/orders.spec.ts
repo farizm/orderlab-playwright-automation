@@ -109,3 +109,64 @@ test('reads a created order by ID through the API @smoke', async ({
   expect(fetchedOrder.items[0].quantity).toBe(2);
   expect(unitPrice(fetchedOrder.items[0])).toBe(12.99);
 });
+
+test('rejects creating an order without a bearer token @regression', async ({
+  request,
+}) => {
+  const apiBaseUrl = requiredEnv('API_BASE_URL');
+  const classicBurger = await getClassicBurger(request);
+  const response = await request.post(`${apiBaseUrl}/orders`, {
+    data: {
+      items: [
+        {
+          product_id: classicBurger.id,
+          quantity: 1,
+        },
+      ],
+    },
+  });
+
+  expect(response.status()).toBe(401);
+});
+
+test('returns not found for an unknown order ID @regression', async ({
+  browser,
+  request,
+}) => {
+  const apiBaseUrl = requiredEnv('API_BASE_URL');
+  const token = await getCustomerAccessToken(browser);
+  const unknownOrderId = '00000000-0000-4000-8000-000000000000';
+  const response = await request.get(
+    `${apiBaseUrl}/orders/${unknownOrderId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  expect(response.status()).toBe(404);
+});
+
+test('rejects creating an order with an unknown product ID @regression', async ({
+  browser,
+  request,
+}) => {
+  const apiBaseUrl = requiredEnv('API_BASE_URL');
+  const token = await getCustomerAccessToken(browser);
+  const response = await request.post(`${apiBaseUrl}/orders`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      items: [
+        {
+          product_id: 'unknown-product-id',
+          quantity: 1,
+        },
+      ],
+    },
+  });
+
+  expect([400, 404]).toContain(response.status());
+});

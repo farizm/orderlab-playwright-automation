@@ -101,6 +101,8 @@ API tests cover backend behavior more directly:
 - product catalog response;
 - order creation;
 - reading a created order.
+- negative cases for missing authentication, unknown orders, and invalid product
+  IDs.
 
 This split keeps the UI suite focused on critical journeys while using API tests
 for faster validation of server behavior.
@@ -144,7 +146,7 @@ The next useful improvements are:
 - authenticated session fixtures for customer and admin users;
 - API helpers for creating scenario data;
 - test data reset or seed endpoint;
-- negative API coverage for unauthorized and invalid requests;
+- additional negative API coverage for malformed payloads and forbidden access;
 - broader order history assertions;
 - accessibility smoke checks;
 - multi-browser or scheduled CI only after the core suite remains stable.

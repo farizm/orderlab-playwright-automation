@@ -56,6 +56,9 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Products API | Read product catalog | Public product endpoint returns expected seed data | `tests/api/products.spec.ts` |
 | Orders API | Create an order | Server calculates subtotal and snapshots item price | `tests/api/orders.spec.ts` |
 | Orders API | Read a created order by ID | Authenticated customer can retrieve the created order | `tests/api/orders.spec.ts` |
+| Orders API | Reject order creation without auth | Protected order endpoint requires bearer token | `tests/api/orders.spec.ts` |
+| Orders API | Return not found for unknown order | Missing valid order IDs are handled clearly | `tests/api/orders.spec.ts` |
+| Orders API | Reject unknown product ID | Invalid order payloads do not create orders | `tests/api/orders.spec.ts` |
 
 ## Coverage matrix
 
@@ -64,7 +67,7 @@ goal is stable coverage of the highest-value customer and admin flows.
 | Login | Positive and negative login checks | Token acquisition used by API helpers | Public demo accounts only |
 | Product catalog | Search and category filter | Product list and seed data validation | Uses stable product names as fixtures |
 | Cart | Add item and verify cart state | Not directly covered | Cart is browser-local state |
-| Checkout | Customer checkout confirmation | Order creation validates server-side pricing | Dynamic address avoids duplicate-looking data |
+| Checkout | Customer checkout confirmation | Order creation validates server-side pricing and bad product IDs | Dynamic address avoids duplicate-looking data |
 | Order history | Confirmation reads order ID and status | Read created order by ID | Deeper history checks are planned |
 | Admin orders | Admin updates status and verifies persistence | Not directly covered | API admin status tests are planned |
 
@@ -178,7 +181,7 @@ next improvements would be:
 
 - add a dedicated test data reset or seed endpoint;
 - introduce stronger fixtures for customer/admin authenticated sessions;
-- add negative API checks for unauthorized access and invalid payloads;
+- expand negative API checks for malformed payloads and forbidden access;
 - add a public `ARCHITECTURE.md` decision log as the framework evolves;
 - expand order history assertions without making tests depend on old shared
   data.
