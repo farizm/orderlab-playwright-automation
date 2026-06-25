@@ -19,6 +19,8 @@ Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)
 AI-assisted QA workflow: [AI_QA_WORKFLOW.md](./AI_QA_WORKFLOW.md)
 Debugging guide: [DEBUGGING.md](./DEBUGGING.md)
 Test data reset contract: [docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md)
+Lovable reset implementation guide:
+[docs/LOVABLE_RESET_IMPLEMENTATION.md](./docs/LOVABLE_RESET_IMPLEMENTATION.md)
 
 ## CI evidence
 
@@ -184,7 +186,9 @@ fixtures.
 
 `TEST_API_BASE_URL` and `TEST_RESET_TOKEN` are optional until the demo app
 exposes the test-only reset endpoint documented in
-[docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md).
+[docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md). The
+application-side implementation steps are documented in
+[docs/LOVABLE_RESET_IMPLEMENTATION.md](./docs/LOVABLE_RESET_IMPLEMENTATION.md).
 
 ## CI
 
@@ -203,6 +207,10 @@ The pipeline runs on push and pull request using split jobs:
 
 Each Playwright job uploads its own HTML report and failure artifacts so
 reviewers can inspect the exact layer that failed.
+
+Each job also writes a short GitHub Actions summary with the command, purpose,
+and artifact names. This makes the CI run easier to review without opening raw
+logs first.
 
 CI stores demo account passwords in GitHub Actions Secrets. Public demo emails,
 URLs, and the Supabase anon key remain in the workflow because they are not

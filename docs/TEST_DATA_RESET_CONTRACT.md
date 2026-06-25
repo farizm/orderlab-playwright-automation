@@ -15,13 +15,13 @@ POST /api/test/reset
 Suggested base URL:
 
 ```text
-https://orderlab-playwright-target.lovable.app/api
+https://orderlab-playwright-target.lovable.app/api/public
 ```
 
 Automation variable:
 
 ```env
-TEST_API_BASE_URL=https://orderlab-playwright-target.lovable.app/api
+TEST_API_BASE_URL=https://orderlab-playwright-target.lovable.app/api/public
 TEST_RESET_TOKEN=stored-in-github-secrets
 ```
 
@@ -111,7 +111,7 @@ Return JSON:
 }
 
 Testability:
-- Route should be reachable at /api/test/reset.
+- Route should be reachable at /api/public/test/reset.
 - It should support CORS preflight if needed.
 - It should be safe to call multiple times.
 ```

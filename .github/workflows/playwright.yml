@@ -13,6 +13,8 @@ env:
   CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD }}
   ADMIN_EMAIL: admin@example.com
   ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+  TEST_API_BASE_URL: https://orderlab-playwright-target.lovable.app/api/public
+  TEST_RESET_TOKEN: ${{ secrets.TEST_RESET_TOKEN }}
 
 jobs:
   typecheck:
@@ -35,6 +37,19 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Write job summary
+        if: always()
+        run: |
+          {
+            echo "## TypeScript typecheck"
+            echo ""
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| Purpose | Validate TypeScript types without emitting build output |"
+            echo "| Command | \`npm run typecheck\` |"
+            echo "| Artifact | None — this job is a fast code-quality gate |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
   smoke:
     name: Smoke tests
     runs-on: ubuntu-latest
@@ -51,6 +66,20 @@ jobs:
 
       - name: Run smoke tests
         run: npm run test:smoke
+
+      - name: Write job summary
+        if: always()
+        run: |
+          {
+            echo "## Smoke tests"
+            echo ""
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| Purpose | Confirm the app is reachable and the highest-value user flows still work |"
+            echo "| Command | \`npm run test:smoke\` |"
+            echo "| Report artifact | \`smoke-playwright-report\` |"
+            echo "| Failure artifact | \`smoke-test-results\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Playwright HTML report
         if: always()
@@ -87,6 +116,20 @@ jobs:
       - name: Run API tests
         run: npm run test:api
 
+      - name: Write job summary
+        if: always()
+        run: |
+          {
+            echo "## API tests"
+            echo ""
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| Purpose | Validate product/order API behavior, auth, negative cases, and lightweight contracts |"
+            echo "| Command | \`npm run test:api\` |"
+            echo "| Report artifact | \`api-playwright-report\` |"
+            echo "| Failure artifact | \`api-test-results\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v5
@@ -121,6 +164,20 @@ jobs:
 
       - name: Run UI tests
         run: npm run test:ui
+
+      - name: Write job summary
+        if: always()
+        run: |
+          {
+            echo "## UI tests"
+            echo ""
+            echo "| Field | Value |"
+            echo "|---|---|"
+            echo "| Purpose | Validate browser-level customer and admin journeys through Playwright |"
+            echo "| Command | \`npm run test:ui\` |"
+            echo "| Report artifact | \`ui-playwright-report\` |"
+            echo "| Failure artifact | \`ui-test-results\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Playwright HTML report
         if: always()
