@@ -1,74 +1,12 @@
-import { expect, test, type APIRequestContext } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { getCustomerAccessToken } from '../support/auth';
 import { requiredEnv } from '../support/env';
-
-type Product = {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-};
-
-type OrderItem = {
-  productId?: string;
-  product_id?: string;
-  quantity: number;
-  unitPrice?: number;
-  unit_price?: number;
-};
-
-type OrderResponse = {
-  id: string;
-  status: string;
-  subtotal: number;
-  items: OrderItem[];
-};
-
-async function getClassicBurger(request: APIRequestContext): Promise<Product> {
-  const apiBaseUrl = requiredEnv('API_BASE_URL');
-  const response = await request.get(`${apiBaseUrl}/products`);
-  const body = (await response.json()) as { products: Product[] };
-  const classicBurger = body.products.find(
-    (product) => product.name === 'Classic Burger',
-  );
-
-  if (!classicBurger) {
-    throw new Error('Classic Burger was not found in the product catalog');
-  }
-
-  return classicBurger;
-}
-
-async function createClassicBurgerOrder(
-  request: APIRequestContext,
-  token: string,
-): Promise<OrderResponse> {
-  const apiBaseUrl = requiredEnv('API_BASE_URL');
-  const classicBurger = await getClassicBurger(request);
-  const response = await request.post(`${apiBaseUrl}/orders`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    data: {
-      items: [
-        {
-          product_id: classicBurger.id,
-          quantity: 2,
-        },
-      ],
-    },
-  });
-
-  const responseBody = await response.text();
-
-  expect(response.status(), responseBody).toBe(201);
-
-  return JSON.parse(responseBody) as OrderResponse;
-}
-
-function unitPrice(item: OrderItem): number | undefined {
-  return item.unitPrice ?? item.unit_price;
-}
+import {
+  createClassicBurgerOrder,
+  getClassicBurger,
+  type OrderResponse,
+  unitPrice,
+} from '../support/orders';
 
 test('creates an order through the API @smoke', async ({
   browser,

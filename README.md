@@ -78,7 +78,7 @@ tests/
   api/        API tests for public OrderLab endpoints
   fixtures.ts Authenticated customer/admin page fixtures
   pages/      Page Objects for UI screens
-  support/    Small shared helpers
+  support/    Environment, auth, and API data helpers
   ui/         UI tests
 ```
 
@@ -168,6 +168,7 @@ execution from the GitHub Actions artifact.
 
 - Page Objects are small and screen-focused.
 - Customer/admin fixtures remove duplicated login setup from UI tests.
+- API helpers keep setup details out of scenario-level API specs.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
 - Tests avoid fixed sleeps and use Playwright web-first assertions.
 - Each order-related test creates its own order data.

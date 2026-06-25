@@ -28,7 +28,7 @@ tests/
   api/        API-level tests for public HTTP endpoints
   fixtures.ts Reusable authenticated customer/admin page fixtures
   pages/      Page Objects for user-facing screens
-  support/    Shared helpers, environment access, authentication helpers
+  support/    Shared helpers for environment, auth, and API test data
   ui/         Browser-based UI tests
 ```
 
@@ -98,6 +98,7 @@ Current approach:
 - demo customer/admin accounts are public test fixtures;
 - checkout tests use dynamic delivery addresses with timestamps;
 - API order tests create an order before reading it back;
+- API order setup is shared through `tests/support/orders.ts`;
 - admin status tests create a real customer order before changing its status.
 
 Planned improvement:
@@ -162,7 +163,6 @@ later.
 
 The next useful improvements are:
 
-- API helpers for creating scenario data;
 - test data reset or seed endpoint;
 - additional negative API coverage for malformed payloads and forbidden access;
 - broader order history assertions;
