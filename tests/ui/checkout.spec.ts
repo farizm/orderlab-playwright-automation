@@ -18,7 +18,7 @@ test('completes checkout and shows order confirmation @smoke', async ({
   await productsPage.addProductToCart(products.classicBurger.name);
 
   await checkoutPage.open();
-  const checkoutDetails = createCheckoutDetails('portfolioCustomer');
+  const checkoutDetails = createCheckoutDetails('demoCustomer');
 
   await checkoutPage.submitOrder(checkoutDetails.name, checkoutDetails.address);
 

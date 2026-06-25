@@ -2,23 +2,23 @@
 
 ## Active milestone
 
-Mature the repository from strong `v0.1` portfolio proof toward a more
-professional SDET portfolio project.
+Mature the repository from strong `v0.1` automation proof toward a more
+professional SDET framework.
 
 ## Active task
 
-Upgrade Playwright to a patched version and verify local + CI stability.
+Create full beginner-friendly project documentation and remove job-search
+wording from public-facing documentation.
 
 ## Acceptance criteria
 
-- Upgrade `@playwright/test` from `1.53.0` to a version not affected by the
-  current audit advisory.
-- Keep the Playwright version pinned.
-- Update GitHub Actions Playwright Docker image to the matching version.
-- Reinstall local Chromium for the new Playwright runtime.
-- `npm audit`, `npm run typecheck`, `npm run test:api`, `npm run test:smoke`,
-  and `npm run test:a11y` pass locally.
-- Push and verify GitHub Actions is green.
+- Add a full documentation file that explains the project history, structure,
+  technologies, techniques, methods, and reasoning in beginner-friendly language.
+- Cover every git history item in chronological order.
+- Rename the main README title to “OrderLab Playwright Automation Framework”.
+- Remove job-search wording from README and main documentation.
+- Link the new full documentation from README.
+- Run a small verification command.
 
 ## Latest evidence
 
@@ -118,6 +118,11 @@ Upgrade Playwright to a patched version and verify local + CI stability.
   - UI tests passed.
 - GitHub currently shows a non-blocking `actions/upload-artifact@v5` Node 20
   deprecation annotation while forcing Node 24. The pipeline still passes.
+- Added `docs/PROJECT_FULL_DOCUMENTATION.md` with full beginner-friendly
+  documentation of structure, tools, methods, architecture, and commit history.
+- Renamed README title to “OrderLab Playwright Automation Framework”.
+- Removed job-search wording from README and main documentation.
+- Linked full documentation from README.
 
 ## Blockers
 
@@ -132,9 +137,4 @@ Upgrade Playwright to a patched version and verify local + CI stability.
 
 ## Next task
 
-Choose the next focused maturity task. Good candidates:
-
-- document the non-blocking GitHub Actions annotation in `DEBUGGING.md`;
-- add one cross-user forbidden API test if a second customer account is
-  available;
-- add a small release checklist for framework changes.
+Run verification, commit, push, and confirm the public documentation reads cleanly.

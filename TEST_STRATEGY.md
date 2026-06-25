@@ -1,7 +1,7 @@
 # Test Strategy
 
 This project tests a small demo order-management app from the point of view of a
-QA Automation / SDET portfolio. The goal is not to automate everything. The goal
+QA Automation / SDET framework. The goal is not to automate everything. The goal
 is to cover the most important risks with tests that are stable, readable, and
 easy to explain.
 
@@ -21,7 +21,7 @@ The suite focuses on the main user journeys:
 
 ## What we do not test in v0.1
 
-This is a portfolio demo, not a production system. For v0.1 we intentionally do
+This is a public demo app, not a production system. For v0.1 we intentionally do
 not cover:
 
 - real payments;

@@ -27,8 +27,8 @@ export const invalidIds = {
 } as const;
 
 export const checkoutCustomers = {
-  portfolioCustomer: {
-    name: 'Portfolio Test Customer',
+  demoCustomer: {
+    name: 'Demo Test Customer',
     addressPrefix: '123 Demo Street',
   },
   adminStatusCustomer: {

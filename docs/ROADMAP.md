@@ -14,6 +14,7 @@ a time.
 - GitHub Actions split into typecheck, smoke, API, and UI jobs.
 - CI artifacts for Playwright reports and failure evidence.
 - README, architecture, test strategy, debugging guide, and AI QA workflow docs.
+- Full beginner-friendly project documentation.
 - GitHub Secrets for demo passwords.
 - Opt-in test data reset contract and tests.
 - Lightweight axe-core accessibility smoke checks.
@@ -72,7 +73,7 @@ Acceptance criteria:
 
 ### 5. Dependency security upgrade
 
-Goal: keep the automation runtime current enough for public portfolio review.
+Goal: keep the automation runtime current enough for public technical review.
 
 Acceptance criteria:
 

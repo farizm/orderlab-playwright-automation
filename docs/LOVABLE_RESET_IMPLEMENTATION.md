@@ -91,7 +91,7 @@ Expected result:
 - reset without token returns `401` or `403`;
 - existing API tests still pass.
 
-## Why this matters for SDET portfolio quality
+## Why this matters for SDET framework quality
 
 This shows that the automation project does not only “click through the UI”.
 It also defines testability requirements for the app:

@@ -1,8 +1,8 @@
-# OrderLab Playwright Automation
+# OrderLab Playwright Automation Framework
 
 [![Playwright CI](https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/farizm/orderlab-playwright-automation/actions/workflows/playwright.yml)
 
-Public SDET / QA Automation portfolio project for the
+Public SDET / QA Automation framework for the
 [OrderLab Demo](https://orderlab-playwright-target.lovable.app) application.
 
 The goal is to show a small but realistic automation framework: Playwright,
@@ -16,9 +16,11 @@ Latest verified green run:
 
 Architecture notes: [ARCHITECTURE.md](./ARCHITECTURE.md)  
 Test strategy: [TEST_STRATEGY.md](./TEST_STRATEGY.md)  
-AI-assisted QA workflow: [AI_QA_WORKFLOW.md](./AI_QA_WORKFLOW.md)
-Debugging guide: [DEBUGGING.md](./DEBUGGING.md)
-Test data reset contract: [docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md)
+AI-assisted QA workflow: [AI_QA_WORKFLOW.md](./AI_QA_WORKFLOW.md)  
+Debugging guide: [DEBUGGING.md](./DEBUGGING.md)  
+Full project documentation:
+[docs/PROJECT_FULL_DOCUMENTATION.md](./docs/PROJECT_FULL_DOCUMENTATION.md)  
+Test data reset contract: [docs/TEST_DATA_RESET_CONTRACT.md](./docs/TEST_DATA_RESET_CONTRACT.md)  
 Lovable reset implementation guide:
 [docs/LOVABLE_RESET_IMPLEMENTATION.md](./docs/LOVABLE_RESET_IMPLEMENTATION.md)
 
@@ -87,7 +89,7 @@ customer data, payment processing, or production business logic.
 
 ## Current test coverage
 
-This is a focused v0.1 portfolio suite. The goal is not maximum test count; the
+This is a focused v0.1 automation suite. The goal is not maximum test count; the
 goal is stable coverage of the highest-value customer and admin flows.
 
 ### UI scenarios
@@ -266,7 +268,7 @@ private credentials for this demo application.
 - Accessibility smoke checks use axe-core on key pages and fail on serious or
   critical WCAG A/AA violations.
 - Tests run with one worker because the target is a shared public demo app with
-  public demo accounts. This favors repeatability over speed for portfolio CI.
+  public demo accounts. This favors repeatability over speed in CI.
 - Locators prefer roles, labels, and stable `data-testid` attributes.
 - Tests avoid fixed sleeps and use Playwright web-first assertions.
 - Each order-related test creates its own order data.
@@ -274,12 +276,12 @@ private credentials for this demo application.
   require bearer authentication.
 - API order tests obtain a customer bearer token through Supabase password grant,
   then call the HTTP API directly.
-- CI enables Playwright traces for the portfolio report artifact; local runs use
+- CI enables Playwright traces for the report artifact; local runs use
   lighter retry-only traces.
 
 ## Known limitations and next improvements
 
-This repository is intentionally scoped as a public v0.1 portfolio proof. The
+This repository is intentionally scoped as a public v0.1 automation framework. The
 next improvements would be:
 
 - keep monitoring reset-based runs for stability as more tests use seeded data;

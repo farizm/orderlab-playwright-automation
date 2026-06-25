@@ -1,7 +1,7 @@
 # Project
 
-OrderLab Playwright Automation is a public SDET / QA Automation portfolio
-project for the OrderLab demo application.
+OrderLab Playwright Automation is a public SDET / QA Automation framework for
+the OrderLab demo application.
 
 The project demonstrates a practical automation framework around a small order
 management app:
@@ -50,5 +50,5 @@ The project has passed the original `v0.1` release gate:
 - `.env.example` documents required variables without private secrets;
 - README, architecture, test strategy, debugging, and AI workflow docs exist.
 
-The current focus is improving the repo from strong `v0.1` portfolio proof
+The current focus is improving the repo from strong `v0.1` automation proof
 toward a more mature SDET-style project without overengineering.

@@ -7,7 +7,7 @@ support interview explanation, not to document every small edit.
 
 Decision:
 
-- Keep the project as a focused Playwright + TypeScript portfolio framework
+- Keep the project as a focused Playwright + TypeScript automation framework
   instead of adding many tools at once.
 
 Reason:
@@ -137,7 +137,7 @@ Decision:
 
 Reason:
 
-- Accessibility is a meaningful quality signal for an SDET portfolio, but the
+- Accessibility is a meaningful quality signal for an SDET framework, but the
   first iteration should stay small and stable.
 
 Trade-off:

@@ -1,7 +1,7 @@
 # OrderLab Automation Architecture
 
-This document explains the public automation design for the OrderLab portfolio
-project. It is written for interview and code-review discussion: what the suite
+This document explains the public automation design for the OrderLab project.
+It is written for interview and code-review discussion: what the suite
 tests, why it is structured this way, and what trade-offs are intentional.
 
 ## Goal
@@ -82,7 +82,7 @@ Current authenticated fixtures:
 - `adminPage` logs in with the public demo admin and starts on the admin orders
   page.
 
-The project does not use persisted `storageState` yet. For this v0.1 portfolio,
+The project does not use persisted `storageState` yet. For this v0.1 framework,
 logging in through the UI keeps the setup explicit and interview-friendly. A
 future optimization could replace repeated UI login with generated storage state
 if test runtime becomes a real problem.
@@ -194,7 +194,7 @@ The pipeline:
 5. uploads the Playwright HTML report;
 6. uploads failure artifacts such as traces and screenshots.
 
-The HTML report is useful for portfolio review because it gives visible proof of
+The HTML report is useful for review because it gives visible proof of
 test execution, timings, retries, traces, and failure context.
 
 ## Intentional trade-offs
