@@ -1,35 +1,40 @@
 export const coverages = {
   commercialProperty: {
-    coverageName: 'Classic Burger',
+    coverageName: 'Commercial Property',
     businessLabel: 'Commercial Property',
-    name: 'Classic Burger',
-    category: 'Burgers',
-    price: 12.99,
+    name: 'Commercial Property',
+    category: 'Property',
+    basePremium: 1299,
     coverageLimit: 1_000_000,
     deductible: 2_500,
     buildingValue: 750_000,
     contentsValue: 250_000,
   },
   generalLiability: {
-    coverageName: 'Margherita Pizza',
+    coverageName: 'General Liability',
     businessLabel: 'General Liability',
-    name: 'Margherita Pizza',
+    name: 'General Liability',
+    category: 'Liability',
+    basePremium: 899,
     liabilityLimit: 2_000_000,
+    deductible: 1_000,
   },
   businessOwnersPackage: {
-    coverageName: 'Veggie Pizza',
+    coverageName: 'Business Owners Package',
     businessLabel: 'Business Owners Package',
-    name: 'Veggie Pizza',
+    name: 'Business Owners Package',
+    category: 'Package',
+    basePremium: 1899,
   },
 } as const;
 
 export const coverageFilters = {
-  pizza: 'Pizza',
+  liability: 'Liability',
 } as const;
 
 export const quoteStatuses = {
-  underwritingReview: 'Pending',
-  approvedForBind: 'Preparing',
+  underwritingReview: 'Submitted',
+  approvedForBind: 'Approved',
 } as const;
 
 export const invalidIds = {

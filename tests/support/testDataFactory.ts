@@ -1,9 +1,10 @@
 import { insuredBusinesses } from './testData';
 
 export function createQuoteCoverageItem(coverageId: string, quantity = 1) {
+  void quantity;
+
   return {
-    product_id: coverageId,
-    quantity,
+    coverage_id: coverageId,
   };
 }
 

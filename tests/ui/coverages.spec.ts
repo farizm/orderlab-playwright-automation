@@ -7,7 +7,7 @@ test('broker can search and filter commercial coverages @regression', async ({
 }) => {
   const coveragesPage = new CoveragesPage(brokerPage);
 
-  await coveragesPage.searchFor('classic');
+  await coveragesPage.searchFor('commercial');
   await expect(
     coveragesPage.coverageCard(coverages.commercialProperty.name),
   ).toBeVisible();
@@ -16,14 +16,14 @@ test('broker can search and filter commercial coverages @regression', async ({
   ).toBeHidden();
 
   await coveragesPage.searchFor('');
-  await coveragesPage.filterByCategory(coverageFilters.pizza);
+  await coveragesPage.filterByCategory(coverageFilters.liability);
 
   await expect(
     coveragesPage.coverageCard(coverages.generalLiability.name),
   ).toBeVisible();
   await expect(
     coveragesPage.coverageCard(coverages.businessOwnersPackage.name),
-  ).toBeVisible();
+  ).toBeHidden();
   await expect(
     coveragesPage.coverageCard(coverages.commercialProperty.name),
   ).toBeHidden();

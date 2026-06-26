@@ -1,9 +1,7 @@
 # Test Data Reset Contract
 
 This document defines the proposed test-only reset endpoint for the InsuranceLab
-portfolio target. The current public app still exposes OrderLab route/API names,
-so reset behavior may refer to orders/products while the automation domain maps
-them to quotes/coverages.
+portfolio target.
 
 The endpoint is not a production business feature. It exists only to make
 automated tests deterministic and easy to explain.
@@ -17,13 +15,13 @@ POST /api/test/reset
 Suggested base URL:
 
 ```text
-https://orderlab-playwright-target.lovable.app/api/public
+https://demo-order-playground.lovable.app/api/public
 ```
 
 Automation variable:
 
 ```env
-TEST_API_BASE_URL=https://orderlab-playwright-target.lovable.app/api/public
+TEST_API_BASE_URL=https://demo-order-playground.lovable.app/api/public
 TEST_RESET_TOKEN=stored-in-github-secrets
 ```
 

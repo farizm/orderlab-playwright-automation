@@ -15,14 +15,16 @@ test('reads the public commercial coverage catalog @smoke', async ({
   const body = await coveragesApi.parseCoveragesResponse(response);
 
   expectCoveragesResponseContract(body);
-  expect(body.products).toHaveLength(6);
+  expect(body.coverages).toHaveLength(3);
 
-  const commercialProperty = body.products.find(
+  const commercialProperty = body.coverages.find(
     (coverage) => coverage.name === coverages.commercialProperty.name,
   );
 
   expect(commercialProperty).toMatchObject({
     category: coverages.commercialProperty.category,
-    price: coverages.commercialProperty.price,
+    base_premium: coverages.commercialProperty.basePremium,
+    coverage_limit: coverages.commercialProperty.coverageLimit,
+    deductible: coverages.commercialProperty.deductible,
   });
 });

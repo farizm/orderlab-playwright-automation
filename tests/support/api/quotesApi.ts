@@ -2,23 +2,38 @@ import type { APIRequestContext, APIResponse } from '@playwright/test';
 import { requiredEnv } from '../env';
 
 export type QuoteCoverageItem = {
-  productId?: string;
-  product_id?: string;
-  quantity: number;
-  unitPrice?: number;
-  unit_price?: number;
+  coverage_id?: string;
+  coverageId?: string;
+  base_premium?: number;
+  basePremium?: number;
+  coverages?: {
+    name?: string;
+  };
 };
 
 export type QuoteResponse = {
   id: string;
   status: string;
-  subtotal: number;
-  items: QuoteCoverageItem[];
+  premium: number;
+  business_name?: string;
+  coverage_ids?: string[];
+  coverages?: QuoteCoverageItem[];
 };
 
 type CreateQuoteCoverageItem = {
-  product_id: string;
-  quantity: number;
+  coverage_id: string;
+};
+
+type CreateQuoteDetails = {
+  business_name: string;
+  business_type?: string | null;
+  business_address: string;
+  annual_revenue: number;
+  number_of_employees: number;
+  building_value?: number | null;
+  contents_value?: number | null;
+  liability_limit?: number | null;
+  prior_claims: number;
 };
 
 export class QuotesApi {
@@ -27,23 +42,25 @@ export class QuotesApi {
   constructor(private readonly request: APIRequestContext) {}
 
   async createQuote(
-    items: readonly CreateQuoteCoverageItem[],
+    coverageItems: readonly CreateQuoteCoverageItem[],
+    details: CreateQuoteDetails,
     token?: string,
   ): Promise<APIResponse> {
-    return this.request.post(`${this.apiBaseUrl}/orders`, {
+    return this.request.post(`${this.apiBaseUrl}/quotes`, {
       headers: token
         ? {
             Authorization: `Bearer ${token}`,
           }
         : undefined,
       data: {
-        items,
+        coverage_ids: coverageItems.map((item) => item.coverage_id),
+        ...details,
       },
     });
   }
 
   async getQuoteById(quoteId: string, token?: string): Promise<APIResponse> {
-    return this.request.get(`${this.apiBaseUrl}/orders/${quoteId}`, {
+    return this.request.get(`${this.apiBaseUrl}/quotes/${quoteId}`, {
       headers: token
         ? {
             Authorization: `Bearer ${token}`,

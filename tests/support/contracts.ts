@@ -6,16 +6,22 @@ export function expectCoverageContract(coverage: Coverage): void {
   expect(coverage.id).toEqual(expect.any(String));
   expect(coverage.name).toEqual(expect.any(String));
   expect(coverage.category).toEqual(expect.any(String));
-  expect(coverage.price).toEqual(expect.any(Number));
-  expect(coverage.price).toBeGreaterThan(0);
+  expect(coverage.base_premium).toEqual(expect.any(Number));
+  expect(coverage.base_premium).toBeGreaterThan(0);
+  expect(
+    coverage.coverage_limit === null ||
+      typeof coverage.coverage_limit === 'number',
+  ).toBe(true);
+  expect(coverage.deductible === null || typeof coverage.deductible === 'number')
+    .toBe(true);
 }
 
 export function expectCoveragesResponseContract(
   body: CoveragesResponse,
 ): void {
-  expect(Array.isArray(body.products)).toBe(true);
+  expect(Array.isArray(body.coverages)).toBe(true);
 
-  for (const coverage of body.products) {
+  for (const coverage of body.coverages) {
     expectCoverageContract(coverage);
   }
 }
@@ -23,22 +29,32 @@ export function expectCoveragesResponseContract(
 export function expectQuoteContract(quote: QuoteResponse): void {
   expect(quote.id).toEqual(expect.any(String));
   expect(quote.status).toEqual(expect.any(String));
-  expect(quote.subtotal).toEqual(expect.any(Number));
-  expect(quote.subtotal).toBeGreaterThanOrEqual(0);
-  expect(Array.isArray(quote.items)).toBe(true);
+  expect(quote.premium).toEqual(expect.any(Number));
+  expect(quote.premium).toBeGreaterThanOrEqual(0);
 
-  for (const item of quote.items) {
+  if (quote.business_name !== undefined) {
+    expect(quote.business_name).toEqual(expect.any(String));
+  }
+
+  const coverageItems = quote.coverages ?? [];
+  const coverageIds = quote.coverage_ids ?? [];
+
+  expect(coverageItems.length + coverageIds.length).toBeGreaterThan(0);
+
+  for (const coverageId of coverageIds) {
+    expect(coverageId).toEqual(expect.any(String));
+  }
+
+  for (const item of coverageItems) {
     expectQuoteCoverageItemContract(item);
   }
 }
 
 function expectQuoteCoverageItemContract(item: QuoteCoverageItem): void {
-  const productId = item.productId ?? item.product_id;
-  const unitPrice = item.unitPrice ?? item.unit_price;
+  const coverageId = item.coverageId ?? item.coverage_id;
+  const basePremium = item.basePremium ?? item.base_premium;
 
-  expect(productId).toEqual(expect.any(String));
-  expect(item.quantity).toEqual(expect.any(Number));
-  expect(item.quantity).toBeGreaterThan(0);
-  expect(unitPrice).toEqual(expect.any(Number));
-  expect(unitPrice).toBeGreaterThan(0);
+  expect(coverageId).toEqual(expect.any(String));
+  expect(basePremium).toEqual(expect.any(Number));
+  expect(basePremium).toBeGreaterThan(0);
 }

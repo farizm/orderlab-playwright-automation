@@ -15,7 +15,7 @@ async function loginAsBroker(page: Page): Promise<void> {
     requiredEnv('CUSTOMER_EMAIL'),
     requiredEnv('CUSTOMER_PASSWORD'),
   );
-  await expect(page).toHaveURL(/\/products$/);
+  await expect(page).toHaveURL(/\/coverages$/);
 }
 
 async function loginAsAdmin(page: Page): Promise<void> {
@@ -23,7 +23,7 @@ async function loginAsAdmin(page: Page): Promise<void> {
 
   await loginPage.open();
   await loginPage.login(requiredEnv('ADMIN_EMAIL'), requiredEnv('ADMIN_PASSWORD'));
-  await expect(page).toHaveURL(/\/admin\/orders$/);
+  await expect(page).toHaveURL(/\/underwriting$/);
 }
 
 export const test = base.extend<AuthFixtures>({

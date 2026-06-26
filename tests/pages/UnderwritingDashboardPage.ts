@@ -6,7 +6,7 @@ export class UnderwritingDashboardPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.quoteRows = page.getByTestId('admin-order-row');
+    this.quoteRows = page.getByTestId('underwriting-quote-row');
   }
 
   quoteRow(quoteId: string): Locator {

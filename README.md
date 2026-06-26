@@ -7,11 +7,9 @@ policy management coverage using the existing Playwright + TypeScript
 architecture from the original OrderLab project. It is a portfolio simulation,
 not a claim of real insurance production experience.
 
-The public demo target still exposes OrderLab routes, selectors, and API paths.
-The automation domain layer maps those stable contracts to insurance concepts:
-Products become Coverages, Cart becomes Quote Builder, Checkout becomes
-Application Submission, Orders become Quotes / Policies, and Admin Orders become
-the Underwriting Dashboard.
+The public demo target exposes InsuranceLab routes, selectors, and API paths for
+coverage discovery, quote building, application submission, quote tracking, and
+underwriting review.
 
 ## Business Value
 
@@ -27,8 +25,8 @@ The suite focuses on workflows that matter in a P&C insurance quote journey:
 
 ## Application Under Test
 
-- Public app: <https://orderlab-playwright-target.lovable.app>
-- Public API base: <https://orderlab-playwright-target.lovable.app/api/public>
+- Public app: <https://demo-order-playground.lovable.app>
+- Public API base: <https://demo-order-playground.lovable.app/api/public>
 - Broker fixture: `customer@example.com / CustomerDemo123!`
 - Underwriter fixture: `admin@example.com / AdminDemo123!`
 

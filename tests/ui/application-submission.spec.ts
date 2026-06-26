@@ -25,9 +25,12 @@ test('broker can submit application for underwriting @smoke', async ({
   await applicationSubmitPage.submitApplication(
     applicationDetails.businessName,
     applicationDetails.businessAddress,
+    applicationDetails.annualRevenue,
+    applicationDetails.numberOfEmployees,
+    applicationDetails.priorClaims,
   );
 
-  await expect(brokerPage).toHaveURL(/\/orders(\?.*)?$/);
+  await expect(brokerPage).toHaveURL(/\/quotes(\?.*)?$/);
   await expect(policiesPage.quoteId).toBeVisible();
   await expect(policiesPage.quoteStatus).toContainText(
     quoteStatuses.underwritingReview,
@@ -47,7 +50,7 @@ test('required underwriting fields are validated @regression', async ({
   await applicationSubmitPage.open();
   await applicationSubmitPage.submitEmptyForm();
 
-  await expect(brokerPage).toHaveURL(/\/checkout$/);
+  await expect(brokerPage).toHaveURL(/\/application$/);
   await expect(applicationSubmitPage.businessNameError).toBeVisible();
   await expect(applicationSubmitPage.businessAddressError).toBeVisible();
 });

@@ -19,14 +19,14 @@ management:
 
 The automation repo targets:
 
-- public demo app: `https://orderlab-playwright-target.lovable.app`;
-- public API base: `https://orderlab-playwright-target.lovable.app/api/public`;
+- public demo app: `https://demo-order-playground.lovable.app`;
+- public API base: `https://demo-order-playground.lovable.app/api/public`;
 - broker and underwriter demo users;
 - coverage catalog, quote builder, application submission, quote confirmation,
   quote retrieval, and underwriting status management.
 
-The public app still exposes OrderLab route/API names. InsuranceLab adapts the
-business-domain layer while preserving the existing automation architecture.
+The public app exposes InsuranceLab route/API names while preserving the
+existing automation architecture.
 
 This is not a real insurance product. The app uses public demo fixtures only and
 must not contain real insured business data, payment logic, rating rules, policy

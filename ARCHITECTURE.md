@@ -4,11 +4,9 @@ InsuranceLab is a Playwright + TypeScript automation portfolio simulating P&C
 insurance workflows for Commercial Property and General Liability quote and
 policy management.
 
-The project preserves the original OrderLab automation architecture and adapts
-only the business/domain layer. The public target still exposes OrderLab
-selectors, routes, and API paths, so Page Objects and API clients keep those
-stable contracts internally while tests describe broker, quote, policy, and
-underwriting behavior.
+The project preserves the original Playwright automation architecture and now
+targets a dedicated InsuranceLab demo app with insurance-specific routes,
+selectors, and API paths.
 
 ## High-Level Structure
 
@@ -86,9 +84,9 @@ HTTP details stay in small API clients:
 - `AuthApi`
 - `TestDataApi`
 
-The `CoveragesApi` client calls the existing `/products` public endpoint.
-The `QuotesApi` client calls the existing `/orders` public endpoint. Specs use
-insurance-domain names while preserving the known backend contract.
+The `CoveragesApi` client calls `/coverages`.
+The `QuotesApi` client calls `/quotes`. Specs use insurance-domain names across
+UI and API layers.
 
 ## CI And Reporting
 

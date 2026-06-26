@@ -10,6 +10,8 @@ import { expectQuoteContract } from '../support/contracts';
 import {
   createCommercialPropertyQuote,
   getCommercialPropertyCoverage,
+  quoteCoverageIds,
+  quoteCoverages,
   quotedPremium,
   type QuoteResponse,
 } from '../support/quotes';
@@ -27,11 +29,11 @@ test('creates a Commercial Property quote through the API @smoke', async ({
 
   expectQuoteContract(quote);
   expect(quote.id).toBeTruthy();
-  expect(quote.status).toMatch(/pending/i);
-  expect(quote.subtotal).toBe(25.98);
-  expect(quote.items).toHaveLength(1);
-  expect(quote.items[0].quantity).toBe(2);
-  expect(quotedPremium(quote.items[0])).toBe(coverages.commercialProperty.price);
+  expect(quote.status).toMatch(/submitted/i);
+  expect(quote.premium).toBeGreaterThanOrEqual(
+    coverages.commercialProperty.basePremium,
+  );
+  expect(quoteCoverageIds(quote)).toHaveLength(1);
 });
 
 test('reads a created quote by ID through the API @smoke', async ({
@@ -48,12 +50,15 @@ test('reads a created quote by ID through the API @smoke', async ({
 
   expectQuoteContract(fetchedQuote);
   expect(fetchedQuote.id).toBe(createdQuote.id);
-  expect(fetchedQuote.status).toMatch(/pending/i);
-  expect(fetchedQuote.subtotal).toBe(25.98);
-  expect(fetchedQuote.items).toHaveLength(1);
-  expect(fetchedQuote.items[0].quantity).toBe(2);
-  expect(quotedPremium(fetchedQuote.items[0])).toBe(
-    coverages.commercialProperty.price,
+  expect(fetchedQuote.status).toMatch(/submitted/i);
+  expect(fetchedQuote.premium).toBeGreaterThanOrEqual(
+    coverages.commercialProperty.basePremium,
+  );
+  const fetchedCoverages = quoteCoverages(fetchedQuote);
+
+  expect(fetchedCoverages).toHaveLength(1);
+  expect(quotedPremium(fetchedCoverages[0])).toBe(
+    coverages.commercialProperty.basePremium,
   );
 });
 
@@ -102,9 +107,16 @@ test('rejects submitting a quote without a bearer token @regression', async ({
 }) => {
   const quotesApi = new QuotesApi(request);
   const commercialProperty = await getCommercialPropertyCoverage(request);
-  const response = await quotesApi.createQuote([
-    createQuoteCoverageItem(commercialProperty.id),
-  ]);
+  const response = await quotesApi.createQuote(
+    [createQuoteCoverageItem(commercialProperty.id)],
+    {
+      business_name: 'Unauthorized Demo Business',
+      business_address: '123 Unauthorized Street',
+      annual_revenue: 100000,
+      number_of_employees: 5,
+      prior_claims: 0,
+    },
+  );
 
   expect(response.status()).toBe(401);
 });
@@ -155,10 +167,16 @@ test('rejects creating a quote with an unknown coverage ID @regression', async (
   const response = await quotesApi.createQuote(
     [
       {
-        product_id: invalidIds.unknownCoverageId,
-        quantity: 1,
+        coverage_id: invalidIds.unknownCoverageId,
       },
     ],
+    {
+      business_name: 'Unknown Coverage LLC',
+      business_address: '1 Test Way',
+      annual_revenue: 100000,
+      number_of_employees: 5,
+      prior_claims: 0,
+    },
     token,
   );
 
@@ -172,20 +190,34 @@ test('rejects creating a quote with an empty coverage array @regression', async 
   const token = await getCustomerAccessToken();
   const response = await quotesApi.createQuote(
     invalidQuotePayloads.emptyItems,
+    {
+      business_name: 'Empty Coverage LLC',
+      business_address: '1 Test Way',
+      annual_revenue: 100000,
+      number_of_employees: 5,
+      prior_claims: 0,
+    },
     token,
   );
 
   expect(response.status()).toBe(400);
 });
 
-test('rejects creating a quote with zero coverage quantity @regression', async ({
+test('rejects creating a quote without required business name @regression', async ({
   request,
 }) => {
   const quotesApi = new QuotesApi(request);
   const token = await getCustomerAccessToken();
   const commercialProperty = await getCommercialPropertyCoverage(request);
   const response = await quotesApi.createQuote(
-    invalidQuotePayloads.zeroQuantity(commercialProperty.id),
+    [createQuoteCoverageItem(commercialProperty.id)],
+    {
+      business_name: '',
+      business_address: '1 Test Way',
+      annual_revenue: 100000,
+      number_of_employees: 5,
+      prior_claims: 0,
+    },
     token,
   );
 
@@ -199,7 +231,7 @@ test('quote premium changes based on risk data @regression', async ({
   const lowRiskQuote = await createCommercialPropertyQuote(request, token);
   const highRiskQuote = await createCommercialPropertyQuote(request, token);
 
-  expect(highRiskQuote.subtotal).toBe(lowRiskQuote.subtotal);
+  expect(highRiskQuote.premium).toBe(lowRiskQuote.premium);
   test.info().annotations.push({
     type: 'domain-note',
     description:

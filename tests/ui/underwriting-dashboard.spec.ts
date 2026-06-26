@@ -28,6 +28,9 @@ test('underwriter can review submitted quote and validate status transition @smo
   await applicationSubmitPage.submitApplication(
     applicationDetails.businessName,
     applicationDetails.businessAddress,
+    applicationDetails.annualRevenue,
+    applicationDetails.numberOfEmployees,
+    applicationDetails.priorClaims,
   );
 
   const quoteId = (await policiesPage.quoteId.textContent())?.trim();
@@ -48,13 +51,13 @@ test('underwriter can review submitted quote and validate status transition @smo
     quoteStatuses.approvedForBind,
   );
   await expect(underwritingDashboardPage.statusSelect(quoteId)).toHaveValue(
-    /preparing/i,
+    quoteStatuses.approvedForBind,
   );
 
   await underwriterPage.reload();
 
   await expect(underwritingDashboardPage.quoteRow(quoteId)).toBeVisible();
   await expect(underwritingDashboardPage.statusSelect(quoteId)).toHaveValue(
-    /preparing/i,
+    quoteStatuses.approvedForBind,
   );
 });

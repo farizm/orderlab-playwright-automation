@@ -37,6 +37,6 @@ test('logs in as a broker @smoke', async ({ page }) => {
   await loginPage.open();
   await loginPage.login(email, password);
 
-  await expect(page).toHaveURL(/\/products$/);
-  await expect(page.getByTestId('product-search')).toBeVisible();
+  await expect(page).toHaveURL(/\/coverages$/);
+  await expect(page.getByTestId('coverage-search')).toBeVisible();
 });

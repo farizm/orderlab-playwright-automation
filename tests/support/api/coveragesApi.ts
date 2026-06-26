@@ -5,11 +5,13 @@ export type Coverage = {
   id: string;
   name: string;
   category: string;
-  price: number;
+  base_premium: number;
+  coverage_limit: number | null;
+  deductible: number | null;
 };
 
 export type CoveragesResponse = {
-  products: Coverage[];
+  coverages: Coverage[];
 };
 
 export class CoveragesApi {
@@ -18,7 +20,7 @@ export class CoveragesApi {
   constructor(private readonly request: APIRequestContext) {}
 
   async getCoverages(): Promise<APIResponse> {
-    return this.request.get(`${this.apiBaseUrl}/products`);
+    return this.request.get(`${this.apiBaseUrl}/coverages`);
   }
 
   async getCoveragesBody(): Promise<CoveragesResponse> {

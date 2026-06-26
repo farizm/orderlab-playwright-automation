@@ -10,11 +10,11 @@ export class CoveragesPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.searchInput = page.getByTestId('product-search');
+    this.searchInput = page.getByTestId('coverage-search');
     this.categoryFilter = page.getByLabel('Filter by category');
-    this.coverageCards = page.getByTestId('product-card');
-    this.emptyState = page.getByTestId('product-empty-state');
-    this.quoteBuilderCount = page.getByTestId('cart-count');
+    this.coverageCards = page.getByTestId('coverage-card');
+    this.emptyState = page.getByTestId('coverage-empty-state');
+    this.quoteBuilderCount = page.getByTestId('quote-builder-count');
   }
 
   coverageCard(coverageName: string): Locator {
@@ -32,6 +32,9 @@ export class CoveragesPage {
   async addCoverageToQuoteBuilder(coverageName: string): Promise<void> {
     await this.page
       .getByRole('button', { name: `Add ${coverageName} to cart` })
+      .or(this.page.getByRole('button', {
+        name: `Add ${coverageName} to quote builder`,
+      }))
       .click();
   }
 }

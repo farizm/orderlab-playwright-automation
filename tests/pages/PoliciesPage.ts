@@ -9,7 +9,7 @@ export class PoliciesPage {
   constructor(page: Page) {
     this.page = page;
     this.confirmationBanner = page.getByRole('status');
-    this.quoteId = this.confirmationBanner.getByTestId('order-number');
-    this.quoteStatus = this.confirmationBanner.getByTestId('order-status');
+    this.quoteId = this.confirmationBanner.getByTestId('quote-number');
+    this.quoteStatus = this.confirmationBanner.getByTestId('quote-status');
   }
 }

@@ -6,7 +6,7 @@ import {
 } from './api/quotesApi';
 import { type Coverage, CoveragesApi } from './api/coveragesApi';
 import { createCommercialPropertyQuoteItems } from './testDataFactory';
-import { coverages } from './testData';
+import { coverages, insuredBusinesses } from './testData';
 
 export type { Coverage, QuoteCoverageItem, QuoteResponse };
 
@@ -15,7 +15,7 @@ export async function getCommercialPropertyCoverage(
 ): Promise<Coverage> {
   const coveragesApi = new CoveragesApi(request);
   const body = await coveragesApi.getCoveragesBody();
-  const commercialProperty = body.products.find(
+  const commercialProperty = body.coverages.find(
     (coverage) => coverage.name === coverages.commercialProperty.name,
   );
 
@@ -34,8 +34,20 @@ export async function createCommercialPropertyQuote(
 ): Promise<QuoteResponse> {
   const quotesApi = new QuotesApi(request);
   const commercialProperty = await getCommercialPropertyCoverage(request);
+  const business = insuredBusinesses.demoBrokerSubmission;
   const response = await quotesApi.createQuote(
     createCommercialPropertyQuoteItems(commercialProperty.id),
+    {
+      business_name: `${business.businessName} ${Date.now()}`,
+      business_type: business.businessType,
+      business_address: `${business.addressPrefix} ${Date.now()}`,
+      annual_revenue: business.annualRevenue,
+      number_of_employees: business.numberOfEmployees,
+      building_value: coverages.commercialProperty.buildingValue,
+      contents_value: coverages.commercialProperty.contentsValue,
+      liability_limit: coverages.generalLiability.liabilityLimit,
+      prior_claims: business.priorClaims,
+    },
     token,
   );
 
@@ -47,5 +59,19 @@ export async function createCommercialPropertyQuote(
 }
 
 export function quotedPremium(item: QuoteCoverageItem): number | undefined {
-  return item.unitPrice ?? item.unit_price;
+  return item.basePremium ?? item.base_premium;
+}
+
+export function quoteCoverageIds(quote: QuoteResponse): string[] {
+  if (quote.coverage_ids) {
+    return quote.coverage_ids;
+  }
+
+  return (quote.coverages ?? [])
+    .map((coverage) => coverage.coverageId ?? coverage.coverage_id)
+    .filter((coverageId): coverageId is string => Boolean(coverageId));
+}
+
+export function quoteCoverages(quote: QuoteResponse): QuoteCoverageItem[] {
+  return quote.coverages ?? [];
 }

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config({ quiet: true });
 
 const baseURL =
-  process.env.BASE_URL ?? 'https://orderlab-playwright-target.lovable.app';
+  process.env.BASE_URL ?? 'https://demo-order-playground.lovable.app';
 
 export default defineConfig({
   testDir: './tests',
