@@ -3,11 +3,11 @@ import { LoginPage } from './pages/LoginPage';
 import { requiredEnv } from './support/env';
 
 type AuthFixtures = {
-  customerPage: Page;
-  adminPage: Page;
+  brokerPage: Page;
+  underwriterPage: Page;
 };
 
-async function loginAsCustomer(page: Page): Promise<void> {
+async function loginAsBroker(page: Page): Promise<void> {
   const loginPage = new LoginPage(page);
 
   await loginPage.open();
@@ -15,7 +15,7 @@ async function loginAsCustomer(page: Page): Promise<void> {
     requiredEnv('CUSTOMER_EMAIL'),
     requiredEnv('CUSTOMER_PASSWORD'),
   );
-  await expect(page).toHaveURL(/\/products$/);
+  await expect(page).toHaveURL(/\/coverages$/);
 }
 
 async function loginAsAdmin(page: Page): Promise<void> {
@@ -23,16 +23,16 @@ async function loginAsAdmin(page: Page): Promise<void> {
 
   await loginPage.open();
   await loginPage.login(requiredEnv('ADMIN_EMAIL'), requiredEnv('ADMIN_PASSWORD'));
-  await expect(page).toHaveURL(/\/admin\/orders$/);
+  await expect(page).toHaveURL(/\/underwriting$/);
 }
 
 export const test = base.extend<AuthFixtures>({
-  customerPage: async ({ page }, use) => {
-    await loginAsCustomer(page);
+  brokerPage: async ({ page }, use) => {
+    await loginAsBroker(page);
     await use(page);
   },
 
-  adminPage: async ({ browser }, use) => {
+  underwriterPage: async ({ browser }, use) => {
     const baseURL = requiredEnv('BASE_URL');
     const context = await browser.newContext({ baseURL });
     const page = await context.newPage();

@@ -1,44 +1,60 @@
 import { expect } from '@playwright/test';
-import type { OrderItem, OrderResponse } from './api/ordersApi';
-import type { Product, ProductsResponse } from './api/productsApi';
+import type { QuoteCoverageItem, QuoteResponse } from './api/quotesApi';
+import type { Coverage, CoveragesResponse } from './api/coveragesApi';
 
-export function expectProductContract(product: Product): void {
-  expect(product.id).toEqual(expect.any(String));
-  expect(product.name).toEqual(expect.any(String));
-  expect(product.category).toEqual(expect.any(String));
-  expect(product.price).toEqual(expect.any(Number));
-  expect(product.price).toBeGreaterThan(0);
+export function expectCoverageContract(coverage: Coverage): void {
+  expect(coverage.id).toEqual(expect.any(String));
+  expect(coverage.name).toEqual(expect.any(String));
+  expect(coverage.category).toEqual(expect.any(String));
+  expect(coverage.base_premium).toEqual(expect.any(Number));
+  expect(coverage.base_premium).toBeGreaterThan(0);
+  expect(
+    coverage.coverage_limit === null ||
+      typeof coverage.coverage_limit === 'number',
+  ).toBe(true);
+  expect(coverage.deductible === null || typeof coverage.deductible === 'number')
+    .toBe(true);
 }
 
-export function expectProductsResponseContract(
-  body: ProductsResponse,
+export function expectCoveragesResponseContract(
+  body: CoveragesResponse,
 ): void {
-  expect(Array.isArray(body.products)).toBe(true);
+  expect(Array.isArray(body.coverages)).toBe(true);
 
-  for (const product of body.products) {
-    expectProductContract(product);
+  for (const coverage of body.coverages) {
+    expectCoverageContract(coverage);
   }
 }
 
-export function expectOrderContract(order: OrderResponse): void {
-  expect(order.id).toEqual(expect.any(String));
-  expect(order.status).toEqual(expect.any(String));
-  expect(order.subtotal).toEqual(expect.any(Number));
-  expect(order.subtotal).toBeGreaterThanOrEqual(0);
-  expect(Array.isArray(order.items)).toBe(true);
+export function expectQuoteContract(quote: QuoteResponse): void {
+  expect(quote.id).toEqual(expect.any(String));
+  expect(quote.status).toEqual(expect.any(String));
+  expect(quote.premium).toEqual(expect.any(Number));
+  expect(quote.premium).toBeGreaterThanOrEqual(0);
 
-  for (const item of order.items) {
-    expectOrderItemContract(item);
+  if (quote.business_name !== undefined) {
+    expect(quote.business_name).toEqual(expect.any(String));
+  }
+
+  const coverageItems = quote.coverages ?? [];
+  const coverageIds = quote.coverage_ids ?? [];
+
+  expect(coverageItems.length + coverageIds.length).toBeGreaterThan(0);
+
+  for (const coverageId of coverageIds) {
+    expect(coverageId).toEqual(expect.any(String));
+  }
+
+  for (const item of coverageItems) {
+    expectQuoteCoverageItemContract(item);
   }
 }
 
-function expectOrderItemContract(item: OrderItem): void {
-  const productId = item.productId ?? item.product_id;
-  const unitPrice = item.unitPrice ?? item.unit_price;
+function expectQuoteCoverageItemContract(item: QuoteCoverageItem): void {
+  const coverageId = item.coverageId ?? item.coverage_id;
+  const basePremium = item.basePremium ?? item.base_premium;
 
-  expect(productId).toEqual(expect.any(String));
-  expect(item.quantity).toEqual(expect.any(Number));
-  expect(item.quantity).toBeGreaterThan(0);
-  expect(unitPrice).toEqual(expect.any(Number));
-  expect(unitPrice).toBeGreaterThan(0);
+  expect(coverageId).toEqual(expect.any(String));
+  expect(basePremium).toEqual(expect.any(Number));
+  expect(basePremium).toBeGreaterThan(0);
 }

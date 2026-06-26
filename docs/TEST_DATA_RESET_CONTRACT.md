@@ -1,7 +1,7 @@
 # Test Data Reset Contract
 
-This document defines the proposed test-only reset endpoint for the OrderLab
-demo app.
+This document defines the proposed test-only reset endpoint for the InsuranceLab
+portfolio target.
 
 The endpoint is not a production business feature. It exists only to make
 automated tests deterministic and easy to explain.
@@ -15,13 +15,13 @@ POST /api/test/reset
 Suggested base URL:
 
 ```text
-https://orderlab-playwright-target.lovable.app/api/public
+https://demo-order-playground.lovable.app/api/public
 ```
 
 Automation variable:
 
 ```env
-TEST_API_BASE_URL=https://orderlab-playwright-target.lovable.app/api/public
+TEST_API_BASE_URL=https://demo-order-playground.lovable.app/api/public
 TEST_RESET_TOKEN=stored-in-github-secrets
 ```
 
@@ -44,11 +44,12 @@ Expected behavior:
 
 The endpoint should:
 
-- delete orders created in the demo/test environment;
-- delete related order items first if needed;
-- re-seed the predictable product catalog;
-- keep demo customer/admin accounts usable;
-- avoid real customer data, real payments, and production business logic.
+- delete quotes/orders created in the demo/test environment;
+- delete related quote/order items first if needed;
+- re-seed the predictable coverage/product catalog;
+- keep demo broker/underwriter accounts usable;
+- avoid real insured business data, real payments, rating rules, policy
+  administration, and production business logic.
 
 ## Expected response
 
@@ -88,7 +89,7 @@ Use this prompt in Lovable:
 Add a test-only API endpoint POST /api/test/reset.
 
 Purpose:
-Make the OrderLab demo app deterministic for Playwright automation.
+Make the InsuranceLab portfolio target deterministic for Playwright automation.
 
 Security:
 - Require header x-test-token.
@@ -97,10 +98,11 @@ Security:
 - Do not expose service role keys or private secrets to the client.
 
 Behavior:
-- Delete demo/test orders and related order_items.
-- Re-seed the predictable product catalog idempotently.
-- Keep demo customer/admin accounts usable.
-- Do not touch real customer data, payments, or production business logic.
+- Delete demo/test quotes/orders and related order_items.
+- Re-seed the predictable coverage/product catalog idempotently.
+- Keep demo broker/underwriter accounts usable.
+- Do not touch real insured business data, payments, rating rules, policy
+  administration, or production business logic.
 
 Response:
 Return JSON:

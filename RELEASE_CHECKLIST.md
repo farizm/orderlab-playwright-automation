@@ -1,5 +1,10 @@
 # Release Checklist
 
+Use this checklist for InsuranceLab portfolio changes. The public demo target
+still exposes original OrderLab route/API names, but release risk should be
+reviewed in broker, coverage, quote, application, policy, and underwriting
+terms.
+
 This checklist defines the minimum QA automation checks before merging or
 deploying changes that affect the OrderLab app or the automation framework.
 

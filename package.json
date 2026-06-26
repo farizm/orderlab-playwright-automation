@@ -1,8 +1,8 @@
 {
-  "name": "orderlab-playwright-automation",
+  "name": "insurancelab-playwright-automation",
   "version": "0.1.0",
   "private": true,
-  "description": "Public SDET automation framework for OrderLab Demo",
+  "description": "Domain-focused Playwright automation portfolio simulating P&C insurance workflows",
   "scripts": {
     "test": "playwright test",
     "test:smoke": "playwright test --grep @smoke",

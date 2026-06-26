@@ -1,5 +1,9 @@
 # Debugging Guide
 
+InsuranceLab is a domain-focused Playwright automation portfolio simulating P&C
+insurance workflows. Some debugging notes still mention the original OrderLab
+target names because the public demo app keeps those route/API contracts.
+
 This guide explains how to debug the most common failures in the OrderLab
 Playwright automation project.
 

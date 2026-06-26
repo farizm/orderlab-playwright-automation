@@ -35,16 +35,16 @@ test.describe('accessibility smoke checks @regression', () => {
     );
   });
 
-  test('products page has no serious accessibility violations', async ({
-    customerPage,
+  test('coverages page has no serious accessibility violations', async ({
+    brokerPage,
   }) => {
-    const results = await new AxeBuilder({ page: customerPage })
+    const results = await new AxeBuilder({ page: brokerPage })
       .withTags(['wcag2a', 'wcag2aa'])
       .exclude('[data-testid="toast"]')
       .analyze();
 
     await expectNoSeriousAccessibilityViolations(
-      'Products page',
+      'Coverages page',
       results.violations,
     );
   });

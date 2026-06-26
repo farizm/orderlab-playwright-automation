@@ -1,28 +1,35 @@
-import { checkoutCustomers } from './testData';
+import { insuredBusinesses } from './testData';
 
-export function createOrderItem(productId: string, quantity = 1) {
+export function createQuoteCoverageItem(coverageId: string, quantity = 1) {
+  void quantity;
+
   return {
-    product_id: productId,
-    quantity,
+    coverage_id: coverageId,
   };
 }
 
-export function createClassicBurgerOrderItems(productId: string) {
-  return [createOrderItem(productId, 2)];
+export function createCommercialPropertyQuoteItems(coverageId: string) {
+  return [createQuoteCoverageItem(coverageId, 2)];
 }
 
-export function createCheckoutDetails(
-  customer: keyof typeof checkoutCustomers,
+export function createApplicationDetails(
+  insuredBusiness: keyof typeof insuredBusinesses,
 ) {
-  const checkoutCustomer = checkoutCustomers[customer];
+  const business = insuredBusinesses[insuredBusiness];
 
   return {
-    name: checkoutCustomer.name,
-    address: `${checkoutCustomer.addressPrefix} ${Date.now()}`,
+    businessName: business.businessName,
+    businessType: business.businessType,
+    businessAddress: `${business.addressPrefix} ${Date.now()}`,
+    annualRevenue: business.annualRevenue,
+    numberOfEmployees: business.numberOfEmployees,
+    priorClaims: business.priorClaims,
   };
 }
 
-export const invalidOrderPayloads = {
+export const invalidQuotePayloads = {
   emptyItems: [],
-  zeroQuantity: (productId: string) => [createOrderItem(productId, 0)],
+  zeroQuantity: (coverageId: string) => [
+    createQuoteCoverageItem(coverageId, 0),
+  ],
 } as const;
