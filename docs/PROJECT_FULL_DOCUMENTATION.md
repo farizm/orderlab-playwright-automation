@@ -1,4 +1,10 @@
-# Полная документация проекта OrderLab Playwright Automation Framework
+# Полная документация проекта InsuranceLab Playwright Automation Framework
+
+> Current portfolio note: this repository has been domain-adapted into
+> InsuranceLab, a P&C insurance QA automation portfolio simulating Commercial
+> Property and General Liability quote workflows. Older historical sections may
+> mention the original OrderLab demo target because the public app still exposes
+> those stable routes, selectors, and API paths.
 
 Этот документ объясняет проект простым языком: что было сделано, зачем это было
 сделано, как устроена структура, какие технологии применены, какие тестовые

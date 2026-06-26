@@ -24,12 +24,12 @@ test('shows an error for invalid credentials @smoke', async ({ page }) => {
   await expect(page).toHaveURL(/\/login$/);
 });
 
-test('logs in as a customer @smoke', async ({ page }) => {
+test('logs in as a broker @smoke', async ({ page }) => {
   const email = process.env.CUSTOMER_EMAIL;
   const password = process.env.CUSTOMER_PASSWORD;
 
   if (!email || !password) {
-    throw new Error('Customer credentials are missing from .env');
+    throw new Error('Broker credentials are missing from .env');
   }
 
   const loginPage = new LoginPage(page);

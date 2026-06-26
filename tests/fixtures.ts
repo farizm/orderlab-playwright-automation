@@ -3,11 +3,11 @@ import { LoginPage } from './pages/LoginPage';
 import { requiredEnv } from './support/env';
 
 type AuthFixtures = {
-  customerPage: Page;
-  adminPage: Page;
+  brokerPage: Page;
+  underwriterPage: Page;
 };
 
-async function loginAsCustomer(page: Page): Promise<void> {
+async function loginAsBroker(page: Page): Promise<void> {
   const loginPage = new LoginPage(page);
 
   await loginPage.open();
@@ -27,12 +27,12 @@ async function loginAsAdmin(page: Page): Promise<void> {
 }
 
 export const test = base.extend<AuthFixtures>({
-  customerPage: async ({ page }, use) => {
-    await loginAsCustomer(page);
+  brokerPage: async ({ page }, use) => {
+    await loginAsBroker(page);
     await use(page);
   },
 
-  adminPage: async ({ browser }, use) => {
+  underwriterPage: async ({ browser }, use) => {
     const baseURL = requiredEnv('BASE_URL');
     const context = await browser.newContext({ baseURL });
     const page = await context.newPage();

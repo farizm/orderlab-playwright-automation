@@ -1,38 +1,38 @@
 import { expect } from '@playwright/test';
-import type { OrderItem, OrderResponse } from './api/ordersApi';
-import type { Product, ProductsResponse } from './api/productsApi';
+import type { QuoteCoverageItem, QuoteResponse } from './api/quotesApi';
+import type { Coverage, CoveragesResponse } from './api/coveragesApi';
 
-export function expectProductContract(product: Product): void {
-  expect(product.id).toEqual(expect.any(String));
-  expect(product.name).toEqual(expect.any(String));
-  expect(product.category).toEqual(expect.any(String));
-  expect(product.price).toEqual(expect.any(Number));
-  expect(product.price).toBeGreaterThan(0);
+export function expectCoverageContract(coverage: Coverage): void {
+  expect(coverage.id).toEqual(expect.any(String));
+  expect(coverage.name).toEqual(expect.any(String));
+  expect(coverage.category).toEqual(expect.any(String));
+  expect(coverage.price).toEqual(expect.any(Number));
+  expect(coverage.price).toBeGreaterThan(0);
 }
 
-export function expectProductsResponseContract(
-  body: ProductsResponse,
+export function expectCoveragesResponseContract(
+  body: CoveragesResponse,
 ): void {
   expect(Array.isArray(body.products)).toBe(true);
 
-  for (const product of body.products) {
-    expectProductContract(product);
+  for (const coverage of body.products) {
+    expectCoverageContract(coverage);
   }
 }
 
-export function expectOrderContract(order: OrderResponse): void {
-  expect(order.id).toEqual(expect.any(String));
-  expect(order.status).toEqual(expect.any(String));
-  expect(order.subtotal).toEqual(expect.any(Number));
-  expect(order.subtotal).toBeGreaterThanOrEqual(0);
-  expect(Array.isArray(order.items)).toBe(true);
+export function expectQuoteContract(quote: QuoteResponse): void {
+  expect(quote.id).toEqual(expect.any(String));
+  expect(quote.status).toEqual(expect.any(String));
+  expect(quote.subtotal).toEqual(expect.any(Number));
+  expect(quote.subtotal).toBeGreaterThanOrEqual(0);
+  expect(Array.isArray(quote.items)).toBe(true);
 
-  for (const item of order.items) {
-    expectOrderItemContract(item);
+  for (const item of quote.items) {
+    expectQuoteCoverageItemContract(item);
   }
 }
 
-function expectOrderItemContract(item: OrderItem): void {
+function expectQuoteCoverageItemContract(item: QuoteCoverageItem): void {
   const productId = item.productId ?? item.product_id;
   const unitPrice = item.unitPrice ?? item.unit_price;
 

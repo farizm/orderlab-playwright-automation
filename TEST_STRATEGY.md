@@ -1,105 +1,84 @@
 # Test Strategy
 
-This project tests a small demo order-management app from the point of view of a
-QA Automation / SDET framework. The goal is not to automate everything. The goal
-is to cover the most important risks with tests that are stable, readable, and
-easy to explain.
+InsuranceLab is a domain-focused Playwright automation portfolio simulating P&C
+insurance workflows. It demonstrates how a QA automation suite can cover
+Commercial Property and General Liability quote and policy management without
+claiming real insurance production experience.
 
-## What we test
+## What We Test
 
-The suite focuses on the main user journeys:
+The suite focuses on the main broker and underwriter journeys:
 
-- customer login;
-- product search and filtering;
-- cart behavior;
-- checkout validation and order confirmation;
-- admin order status management;
-- product and order API behavior;
-- cross-user order authorization with a second demo customer;
-- lightweight accessibility smoke checks;
-- important negative cases such as invalid login, missing auth, unknown orders,
-  and invalid product IDs.
+- broker login;
+- coverage search and filtering;
+- Commercial Property quote creation;
+- General Liability coverage selection;
+- required underwriting/application field validation;
+- application submission for underwriting;
+- quote/policy status validation;
+- underwriter review and status update;
+- coverage and quote API contracts;
+- auth, authorization, unknown ID, and malformed payload cases;
+- lightweight accessibility smoke checks.
 
-## What we do not test in v0.1
+## What We Do Not Test
 
-This is a public demo app, not a production system. For v0.1 we intentionally do
-not cover:
+This is a public demo simulation, not a production insurance platform. The
+suite intentionally does not cover:
 
-- real payments;
-- real customer data;
-- large cross-browser matrix;
-- visual regression;
-- performance testing;
-- complex database reset flows;
-- every possible validation message.
+- real rating algorithms;
+- real policy issuance or binding;
+- real insured business data;
+- payments or billing;
+- claims handling;
+- document generation;
+- agency management integrations;
+- large cross-browser or performance matrices.
 
-Those can be added later if they support a clear testing goal.
+## UI Tests
 
-## Test levels
+UI tests cover flows where browser behavior matters:
 
-### UI tests
+- authentication;
+- coverage catalog search/filter behavior;
+- quote builder state;
+- application submission validation;
+- quote confirmation;
+- underwriting dashboard review and status transition.
 
-UI tests cover flows where browser behavior matters: login, catalog search,
-cart, checkout validation, checkout submission, and admin order updates.
+The tests use Page Objects, Playwright web-first assertions, roles, labels,
+visible text, and stable `data-testid` selectors.
 
-UI tests use:
+## API Tests
 
-- Playwright web-first assertions;
-- Page Objects for screen-level behavior;
-- role, label, text, and `data-testid` locators;
-- no fixed sleeps;
-- authenticated fixtures for customer/admin setup.
+API tests validate server-visible behavior more directly:
 
-### API tests
+- coverage catalog response contract;
+- quote creation and readback;
+- underwriter access to broker quote;
+- cross-broker access rejection when second credentials are configured;
+- missing/invalid token handling;
+- unknown quote and coverage IDs;
+- empty coverage arrays and zero coverage quantity;
+- a documented placeholder for risk-based premium behavior.
 
-API tests cover backend behavior directly and faster than the UI:
+The public demo target currently has fixed seeded pricing, so the risk-premium
+test records that limitation instead of pretending a real rating engine exists.
 
-- product catalog response;
-- order creation;
-- reading an order by ID;
-- admin visibility into customer orders;
-- product and order response contract checks;
-- auth, malformed payload, invalid-token, and invalid-data negative cases.
-- customer data isolation across accounts.
+## Test Data
 
-API tests are useful because they check server behavior without depending on
-the browser UI. Small API client classes hide request URLs, headers, and payload
-details so the spec files stay focused on behavior.
+Shared data and factories keep the domain readable:
 
-API authentication is handled by a small auth client that uses the public demo
-Supabase password grant. API tests do not depend on browser login state or
-localStorage.
+- `tests/support/testData.ts` stores coverages, quote statuses, invalid IDs, and
+  insured business fixtures.
+- `tests/support/testDataFactory.ts` creates quote coverage payloads and
+  application details.
+- `tests/support/quotes.ts` creates reusable API quote setup.
 
-### Accessibility smoke tests
+Dynamic business addresses use timestamps so repeated runs remain easy to
+distinguish.
 
-Accessibility smoke tests use axe-core on a small set of high-value pages. The
-goal is not a full manual accessibility audit. The goal is to catch serious or
-critical WCAG A/AA violations early while keeping the suite fast and stable.
-
-Transient toast notifications are excluded from page-level scans because they
-are temporary third-party UI elements. If toast accessibility becomes important
-to the product risk profile, it should be tested with a separate focused check.
-
-## Test data approach
-
-Test data is simple and predictable:
-
-- public demo accounts come from environment variables;
-- second-customer credentials enable cross-user authorization coverage;
-- seeded products are stable and safe to use in tests;
-- order tests create fresh orders during the run;
-- dynamic addresses use timestamps so repeated runs are easy to distinguish;
-- shared constants live in `tests/support/testData.ts`.
-- factories in `tests/support/testDataFactory.ts` create reusable order payloads
-  and checkout details.
-- an opt-in reset contract exists for `POST /api/test/reset` once the demo app
-  exposes it.
-
-Cleanup strategy for v0.1 is isolation-based: tests create unique data and do
-not depend on old orders. The next application-level improvement would be a
-reset/cleanup endpoint so every test run starts from a fully known state.
-
-## Locator strategy
+## Locator Strategy
 
 Preferred locator order:
 
@@ -107,52 +86,34 @@ Preferred locator order:
 2. meaningful visible text;
 3. stable `data-testid` attributes for explicit test contracts.
 
-Avoid:
+The suite avoids XPath, long CSS chains, selectors based on styling, and fixed
+waits.
 
-- XPath;
-- long CSS chains;
-- selectors based on styling or layout;
-- fixed waits.
+## CI And Reporting
 
-## CI and reporting
+The existing Playwright commands remain:
 
-Every push and pull request runs split CI jobs:
+```bash
+npm run typecheck
+npm run test:smoke
+npm run test:regression
+npm run test:ui
+npm run test:api
+npm run test:a11y
+```
 
-1. TypeScript typecheck;
-2. smoke tests as the first functional quality gate;
-3. API tests after smoke is green;
-4. UI tests after smoke is green;
-5. HTML report and failure artifact upload per Playwright job.
+The suite runs with one worker because it targets a shared public demo app and
+public demo accounts. HTML reports, traces, and screenshots provide reviewable
+failure evidence.
 
-This gives reviewers proof that the project works from a clean checkout.
-
-The suite runs with one worker. That is intentional for v0.1 because the tests
-target a shared public demo app and public demo accounts. Serial execution is a
-small speed trade-off that reduces cross-test interference and keeps CI results
-repeatable.
-
-## Definition of done for a test
+## Definition Of Done
 
 A test is acceptable when it:
 
 - verifies user-visible or API-visible behavior;
-- has a clear reason to exist;
+- has a clear insurance-domain reason to exist;
 - can run independently;
-- does not depend on old shared order data;
-- uses stable locators;
+- uses stable locators and factories;
+- keeps TypeScript strict and readable;
 - passes locally and in CI;
-- is readable enough to explain in an interview.
-
-## Practical priorities
-
-When improving the suite, prefer this order:
-
-1. improve reliability;
-2. improve readability;
-3. improve test data control;
-4. add meaningful negative coverage;
-5. add targeted accessibility checks where they protect important user flows;
-6. only then add more test count.
-
-More tests are not automatically better. A smaller stable suite is more valuable
-than a large flaky one.
+- can be explained clearly as portfolio automation.

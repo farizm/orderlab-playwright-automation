@@ -1,232 +1,120 @@
-# OrderLab Automation Architecture
+# InsuranceLab Automation Architecture
 
-This document explains the public automation design for the OrderLab project.
-It is written for interview and code-review discussion: what the suite
-tests, why it is structured this way, and what trade-offs are intentional.
+InsuranceLab is a Playwright + TypeScript automation portfolio simulating P&C
+insurance workflows for Commercial Property and General Liability quote and
+policy management.
 
-## Goal
+The project preserves the original OrderLab automation architecture and adapts
+only the business/domain layer. The public target still exposes OrderLab
+selectors, routes, and API paths, so Page Objects and API clients keep those
+stable contracts internally while tests describe broker, quote, policy, and
+underwriting behavior.
 
-OrderLab is a demo order-management application used as a stable target for a
-Playwright + TypeScript automation framework.
-
-The automation project is designed to demonstrate:
-
-- maintainable UI automation;
-- API testing of core backend behavior;
-- Page Object Model structure;
-- stable selectors and accessible locators;
-- CI execution with reports and traces;
-- practical test data handling.
-- lightweight accessibility smoke coverage.
-
-The goal is not to imitate a large enterprise framework. The goal is a small,
-clear, reliable framework that can be explained in an interview.
-
-## High-level structure
+## High-Level Structure
 
 ```text
 tests/
-  api/        API-level tests for public HTTP endpoints
-  fixtures.ts Reusable authenticated customer/admin page fixtures
-  pages/      Page Objects for user-facing screens
+  api/        API-level tests for coverage and quote/policy behavior
+  fixtures.ts Reusable authenticated broker/underwriter page fixtures
+  pages/      Page Objects for workflow screens
   support/    Shared helpers for environment, auth, API clients, contracts, factories, and test data
-  ui/         Browser-based UI tests
+  ui/         Browser-based UI workflow tests
 ```
 
-## Locator strategy
+## Domain Mapping
 
-The project uses Playwright locators in this order of preference:
-
-1. User-facing roles, labels, and accessible names.
-2. Stable `data-testid` attributes where the UI element is part of the test
-   contract.
-3. Text locators only when the text is meaningful user-facing behavior.
-
-The suite avoids XPath, fixed CSS chains, and implementation-dependent DOM
-selectors because those make tests fragile during normal UI refactoring.
+| Original app contract | InsuranceLab domain |
+|---|---|
+| Products | Coverages |
+| Product | Coverage |
+| Cart | Quote Builder |
+| Checkout | Application Submission |
+| Orders | Quotes / Policies |
+| Admin Orders | Underwriting Dashboard |
+| Customer | Broker / Insured Business |
+| Order Status | Quote / Policy Status |
+| Product API | Coverage API |
+| Order API | Quote / Policy API |
 
 ## Page Object Model
 
-Page Objects are screen-focused:
+Page Objects remain small and screen-focused:
 
 - `LoginPage`
-- `ProductsPage`
-- `CartPage`
-- `CheckoutPage`
-- `OrdersPage`
-- `AdminOrdersPage`
+- `CoveragesPage`
+- `QuoteBuilderPage`
+- `ApplicationSubmitPage`
+- `PoliciesPage`
+- `UnderwritingDashboardPage`
 
-Each Page Object exposes meaningful user actions and important locators for
-assertions. The project intentionally avoids a large generic `BasePage` because
-that would add abstraction before the suite needs it.
-
-Good Page Object methods in this project describe behavior, for example:
-
-- `login(email, password)`
-- `searchFor(term)`
-- `filterByCategory(category)`
-- `addProductToCart(productName)`
-- `submitOrder(name, address)`
-- `updateStatus(orderId, status)`
+Methods describe insurance workflow actions, such as
+`addCoverageToQuoteBuilder`, `submitApplication`, and `updateStatus`. Selectors
+such as `product-card`, `cart-count`, and `order-number` remain unchanged
+because they are the public demo target's stable test contract.
 
 ## Fixtures
 
-The suite uses Playwright fixtures for authenticated customer and admin pages.
-This removes duplicated login setup from UI tests while keeping the setup easy
-to understand.
+The suite uses Playwright fixtures for authenticated users:
 
-Current authenticated fixtures:
+- `brokerPage` logs in with the public broker/customer fixture and starts on the
+  coverage catalog.
+- `underwriterPage` logs in with the public admin fixture and starts on the
+  underwriting dashboard.
 
-- `customerPage` logs in with the public demo customer and starts on the product
-  catalog.
-- `adminPage` logs in with the public demo admin and starts on the admin orders
-  page.
+The project does not use persisted `storageState`; UI login remains explicit and
+easy to review.
 
-The project does not use persisted `storageState` yet. For this v0.1 framework,
-logging in through the UI keeps the setup explicit and interview-friendly. A
-future optimization could replace repeated UI login with generated storage state
-if test runtime becomes a real problem.
+## Test Data Strategy
 
-## Test data strategy
+Insurance-shaped data lives in `tests/support/testData.ts` and includes fields
+such as `businessName`, `businessType`, `businessAddress`, `annualRevenue`,
+`numberOfEmployees`, `coverageName`, `coverageLimit`, `deductible`,
+`buildingValue`, `contentsValue`, `liabilityLimit`, `priorClaims`,
+`underwritingStatus`, `quoteId`, and `policyId` where relevant.
 
-The current v0.1 suite uses public demo accounts and predictable seeded
-products. Order-related tests create fresh orders during the test run instead of
-depending on old order history.
+Because the public target has fixed seeded data, coverage display names still
+map to the existing seeded items. This keeps the portfolio executable while the
+test names, Page Objects, factories, and contracts communicate the insurance
+domain.
 
-Current approach:
+## API Client Layer
 
-- product data is predictable;
-- demo customer/admin accounts are public test fixtures;
-- checkout tests use dynamic delivery addresses with timestamps;
-- API order tests create an order before reading it back;
-- API order setup is shared through `tests/support/orders.ts`;
-- order payloads and checkout details are created through
-  `tests/support/testDataFactory.ts`;
-- admin status tests create a real customer order before changing its status.
-- API authorization tests use separate customer and admin bearer tokens to make
-  role expectations explicit.
-- test reset support is implemented as an opt-in API contract until the demo app
-  exposes `POST /api/test/reset`.
+HTTP details stay in small API clients:
 
-Planned improvement:
+- `CoveragesApi`
+- `QuotesApi`
+- `AuthApi`
+- `TestDataApi`
 
-- add a dedicated reset/seed/cleanup mechanism so every test run can start from
-  a known clean state and remove created data when needed.
+The `CoveragesApi` client calls the existing `/products` public endpoint.
+The `QuotesApi` client calls the existing `/orders` public endpoint. Specs use
+insurance-domain names while preserving the known backend contract.
 
-## UI and API split
+## CI And Reporting
 
-UI tests cover the browser flows that a real user would perform:
+The Playwright configuration and reporting setup are unchanged:
 
-- login;
-- product search and filtering;
-- cart behavior;
-- checkout validation and submission;
-- admin order status update.
-- accessibility smoke checks on high-value pages.
+- TypeScript typecheck;
+- smoke/regression tagging;
+- API and UI test commands;
+- Chromium project;
+- one worker for shared public demo stability;
+- HTML report;
+- screenshots and traces on failure.
 
-API tests cover backend behavior more directly:
+GitHub Actions should continue to work because scripts, Playwright config, and
+reporting paths remain stable.
 
-- product catalog response;
-- order creation;
-- reading a created order.
-- negative cases for missing authentication, unknown orders, and invalid product
-  IDs.
-- authorization checks for admin access to customer orders and invalid bearer
-  tokens.
-- authorization checks that reject one customer reading another
-  customer's order.
+## Intentional Trade-Offs
 
-This split keeps the UI suite focused on critical journeys while using API tests
-for faster validation of server behavior.
+This is a portfolio simulation, not a fake enterprise insurance platform. It
+does not implement a real rating engine, policy administration system, payment
+flow, agency portal, or production underwriting rules.
 
-Cross-customer authorization coverage uses a second demo customer in the target
-app. This keeps the security expectation executable in CI instead of only
-documented.
+The suite favors a small, professional adaptation:
 
-## Accessibility checks
-
-The suite includes a small axe-core smoke layer for key pages. These checks fail
-on serious or critical WCAG A/AA violations.
-
-The goal is not to replace a full accessibility review. The goal is to add a
-low-cost quality gate that catches obvious issues and demonstrates that
-accessibility is part of the test strategy.
-
-Transient toast notifications are excluded from page-level scans because they
-are short-lived third-party UI elements. They can be covered with a separate
-focused test if they become a higher product risk.
-
-## API client layer
-
-HTTP request details are kept in small API client classes:
-
-- `ProductsApi`
-- `OrdersApi`
-
-The clients know endpoint paths, headers, and payload shape. Specs use those
-clients to describe behavior at a higher level. Scenario setup helpers, such as
-creating a Classic Burger order, stay in `tests/support/orders.ts`.
-
-This keeps the framework readable without turning it into a large custom
-abstraction layer.
-
-## API authentication
-
-API tests use a small `AuthApi` client to obtain a customer bearer token through
-the public demo Supabase password grant. This keeps API tests independent from
-UI login and avoids reading browser storage.
-
-The UI login flow is still tested separately in `tests/ui/login.spec.ts`.
-
-## API contract checks
-
-The API tests include lightweight contract assertions for product and order
-responses. These checks verify important fields, data types, arrays, and numeric
-values without adding a schema-validation dependency.
-
-This gives the suite a practical contract-testing signal while keeping the
-project small enough to explain clearly.
-
-## CI and reporting
-
-GitHub Actions runs on push and pull request.
-
-The pipeline:
-
-1. installs dependencies;
-2. installs Playwright Chromium;
-3. runs TypeScript typecheck;
-4. runs Playwright tests;
-5. uploads the Playwright HTML report;
-6. uploads failure artifacts such as traces and screenshots.
-
-The HTML report is useful for review because it gives visible proof of
-test execution, timings, retries, traces, and failure context.
-
-## Intentional trade-offs
-
-For v0.1, reliability and readability are more important than feature count.
-
-Intentional choices:
-
-- one browser project, Chromium, to keep CI focused and stable;
-- one test worker because the current target is a shared public demo app with
-  public demo accounts;
-- small Page Objects instead of heavy framework layers;
-- public demo credentials only, no real secrets;
-- minimal shared helpers until duplication becomes meaningful;
-- stable smoke/regression tags for focused execution;
-- no Docker or custom reporting yet.
-
-These choices keep the project understandable for interviews and easy to extend
-later.
-
-## Next architecture improvements
-
-The next useful improvements are:
-
-- test data reset or seed endpoint;
-- additional negative API coverage for malformed payloads and forbidden access;
-- broader order history assertions;
-- accessibility smoke checks;
-- multi-browser or scheduled CI only after the core suite remains stable.
+- preserve architecture;
+- rename domain-facing files/classes/functions carefully;
+- keep selectors, routes, and config stable;
+- use insurance wording in tests and docs;
+- avoid overengineering.

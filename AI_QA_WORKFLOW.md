@@ -1,5 +1,9 @@
 # AI-Assisted QA Workflow
 
+Current domain: InsuranceLab, a portfolio simulation for P&C insurance quote
+and policy workflows. Historical examples may use the original OrderLab target
+names where the public demo app contract still does.
+
 This project uses AI as a QA thinking assistant, not as a replacement for test
 design judgment.
 
@@ -18,30 +22,30 @@ Requirement
   → CI evidence
 ```
 
-## Example: customer checkout
+## Example: broker application submission
 
 ### Requirement
 
-A customer can add a product to the cart, submit checkout details, and receive an
-order confirmation.
+A broker can add coverage to the quote builder, submit application details, and
+receive a quote confirmation.
 
 ### Product risks
 
-- Checkout might create an order with missing customer details.
-- Cart contents might not be included in the order.
-- The order confirmation might not show a reliable order ID or status.
-- The backend might calculate the wrong subtotal.
+- Application submission might create a quote with missing business details.
+- Quote builder contents might not be included in the quote.
+- The quote confirmation might not show a reliable quote ID or status.
+- The backend might calculate the wrong premium/subtotal.
 
 ### Test scenarios
 
 | Scenario | Level | Reason |
 |---|---|---|
-| Customer completes checkout successfully | UI | Verifies the real user journey |
-| Empty checkout fields show validation errors | UI | Verifies user-facing validation |
-| API creates an order with expected subtotal | API | Verifies server-side pricing |
-| API rejects unknown product ID | API | Verifies invalid payload handling |
+| Broker submits application successfully | UI | Verifies the real user journey |
+| Empty underwriting fields show validation errors | UI | Verifies user-facing validation |
+| API creates a quote with expected premium/subtotal | API | Verifies server-side pricing |
+| API rejects unknown coverage ID | API | Verifies invalid payload handling |
 | API rejects empty items and zero quantity | API | Verifies malformed payload handling |
-| Order response matches expected contract | API | Verifies important response shape |
+| Quote response matches expected contract | API | Verifies important response shape |
 
 ### Automation choices
 
@@ -51,48 +55,48 @@ order confirmation.
 - API clients keep HTTP details out of scenario-level tests.
 - API auth client obtains bearer tokens without browser storage.
 - Shared test data keeps seeded demo values in one place.
-- Test data factories keep order payloads and checkout data reusable.
+- Test data factories keep quote payloads and application data reusable.
 
 ### Implemented evidence
 
-- `tests/ui/checkout.spec.ts`
-- `tests/api/orders.spec.ts`
-- `tests/support/api/ordersApi.ts`
+- `tests/ui/application-submission.spec.ts`
+- `tests/api/quotes.spec.ts`
+- `tests/support/api/quotesApi.ts`
 - `tests/support/api/authApi.ts`
 - `tests/support/contracts.ts`
 - `tests/support/testDataFactory.ts`
 - GitHub Actions HTML report artifact
 
-## Example: admin order status
+## Example: underwriting quote status
 
 ### Requirement
 
-An admin can view customer orders and update an order status.
+An underwriter can view broker-submitted quotes and update quote status.
 
 ### Product risks
 
-- Admin might not see newly created customer orders.
+- Underwriter might not see newly submitted broker quotes.
 - Status updates might not persist after reload.
-- Customer and admin flows might accidentally share browser state.
+- Broker and underwriter flows might accidentally share browser state.
 
 ### Test scenarios
 
 | Scenario | Level | Reason |
 |---|---|---|
-| Customer creates an order, admin updates status | UI | Verifies cross-role workflow |
+| Broker creates a quote, underwriter updates status | UI | Verifies cross-role workflow |
 | Status remains after reload | UI | Verifies persistence |
 
 ### Automation choices
 
-- The test uses separate customer/admin authenticated pages.
-- The order is created during the test run instead of relying on old data.
-- The admin page reloads before checking the order to avoid stale list state.
+- The test uses separate broker/underwriter authenticated pages.
+- The quote is created during the test run instead of relying on old data.
+- The underwriting page reloads before checking the quote to avoid stale list state.
 
 ### Implemented evidence
 
-- `tests/ui/admin-orders.spec.ts`
+- `tests/ui/underwriting-dashboard.spec.ts`
 - `tests/fixtures.ts`
-- `tests/pages/AdminOrdersPage.ts`
+- `tests/pages/UnderwritingDashboardPage.ts`
 
 ## How AI fits into this process
 

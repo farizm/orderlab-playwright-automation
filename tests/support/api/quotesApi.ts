@@ -1,7 +1,7 @@
 import type { APIRequestContext, APIResponse } from '@playwright/test';
 import { requiredEnv } from '../env';
 
-export type OrderItem = {
+export type QuoteCoverageItem = {
   productId?: string;
   product_id?: string;
   quantity: number;
@@ -9,25 +9,25 @@ export type OrderItem = {
   unit_price?: number;
 };
 
-export type OrderResponse = {
+export type QuoteResponse = {
   id: string;
   status: string;
   subtotal: number;
-  items: OrderItem[];
+  items: QuoteCoverageItem[];
 };
 
-type CreateOrderItem = {
+type CreateQuoteCoverageItem = {
   product_id: string;
   quantity: number;
 };
 
-export class OrdersApi {
+export class QuotesApi {
   private readonly apiBaseUrl = requiredEnv('API_BASE_URL');
 
   constructor(private readonly request: APIRequestContext) {}
 
-  async createOrder(
-    items: readonly CreateOrderItem[],
+  async createQuote(
+    items: readonly CreateQuoteCoverageItem[],
     token?: string,
   ): Promise<APIResponse> {
     return this.request.post(`${this.apiBaseUrl}/orders`, {
@@ -42,8 +42,8 @@ export class OrdersApi {
     });
   }
 
-  async getOrderById(orderId: string, token?: string): Promise<APIResponse> {
-    return this.request.get(`${this.apiBaseUrl}/orders/${orderId}`, {
+  async getQuoteById(quoteId: string, token?: string): Promise<APIResponse> {
+    return this.request.get(`${this.apiBaseUrl}/orders/${quoteId}`, {
       headers: token
         ? {
             Authorization: `Bearer ${token}`,
